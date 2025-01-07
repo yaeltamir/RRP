@@ -10,7 +10,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/LoginFragment">
 
-
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.recipereach.ui.login.LoginFragment"
