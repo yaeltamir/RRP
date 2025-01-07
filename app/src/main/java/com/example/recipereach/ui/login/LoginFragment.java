@@ -52,14 +52,8 @@ public class LoginFragment extends Fragment {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final Button SigninButton = binding.Signin;
         final ProgressBar loadingProgressBar = binding.loading;
-
-        // *** הוספת כפתור למעבר לפרגמנט SignInFragment ***
-        Button signInButton = binding.Signin; // מניח ש-id הוא signin
-        signInButton.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.action_LoginFragment_to_SignInFragment);
-        });
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
@@ -130,8 +124,20 @@ public class LoginFragment extends Fragment {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+
+                // הוספת הניווט לדף הבא צריך לשנות פה את דף היעד
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.action_LoginFragment_to_SignInFragment);
             }
         });
+        SigninButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.action_LoginFragment_to_SignInFragment);
+            }
+        });
+
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
