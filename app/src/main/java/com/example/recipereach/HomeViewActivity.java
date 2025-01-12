@@ -31,7 +31,7 @@ public class HomeViewActivity extends AppCompatActivity {
 
         // קבלת שם המשתמש מהמסך הקודם
         //String userName = getIntent().getStringExtra("userName");
-        String userName="צריך לשנות את זה";
+        String userName="abc";
         userNameTextView.setText("Hello, " + userName);
 
         // חיבור למסד הנתונים
