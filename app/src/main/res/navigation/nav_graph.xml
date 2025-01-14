@@ -23,5 +23,8 @@
         android:name="com.example.recipereach.SigninFragment"
         android:label="Sign In"
         tools:layout="@layout/fragment_blank" />
+
+
+
 </navigation>
 

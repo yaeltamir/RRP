@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment {
 
                 // הוספת הניווט לדף הבא צריך לשנות פה את דף היעד
                 NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.action_LoginFragment_to_SignInFragment);
+                navController.navigate(R.id.login);
             }
         });
         SigninButton.setOnClickListener(new View.OnClickListener() {

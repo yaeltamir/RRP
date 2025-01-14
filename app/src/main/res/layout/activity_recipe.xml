@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- TextureView להצגת וידאו מהמצלמה -->
+    <TextureView
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_above="@id/startButton"
+        android:layout_marginBottom="8dp" />
+
+    <!-- ScrollView מאפשר גלילה של הטקסט -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/startButton"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/recipeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="מצרכים:
+    - 2 כוסות קמח
+   - 1 כוס סוכר
+    - 3 ביצים
+    - 1/2 כוס שמן
+    - 1 כוס חלב
+
+אופן הכנה:
+1. לערבב את כל החומרים היבשים בקערה גדולה.
+2. להוסיף את הביצים, השמן והחלב ולערבב היטב עד לקבלת תערובת אחידה.
+3. לשפוך את התערובת לתבנית אפייה משומנת.
+4. לאפות בתנור שחומם מראש ל-180 מעלות במשך כ-35 דקות או עד שקיסם יוצא
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+fffffffffffffאופן הכנה:
+1. לערבב את כל החומרים היבשים בקערה גדולה.
+2. להוסיף את הביצים, השמן והחלב ולערבב היטב עד לקבלת תערובת אחידה.
+3. לשפוך את התערובת לתבנית אפייה משומנת.
+4. לאפות בתנור שחומם מראש ל-180 מעלות במשך כ-35 דקות או עד שקיסם יוצא
+pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+fffffffffffffאופן הכנה:
+1. לערבב את כל החומרים היבשים בקערה גדולה.
+2. להוסיף את הביצים, השמן והחלב ולערבב היטב עד לקבלת תערובת אחידה.
+3. לשפוך את התערובת לתבנית אפייה משומנת.
+4. לאפות בתנור שחומם מראש ל-180 מעלות במשך כ-35 דקות או עד שקיסם יוצא
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+fffffffffffffאופן הכנה:
+1. לערבב את כל החומרים היבשים בקערה גדולה.
+2. להוסיף את הביצים, השמן והחלב ולערבב היטב עד לקבלת תערובת אחידה.
+3. לשפוך את התערובת לתבנית אפייה משומנת.
+4. לאפות בתנור שחומם מראש ל-180 מעלות במשך כ-35 דקות או עד שקיסם יוצא
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+fffffffffffff
+ע. לתת לעוגה להתקרר לפני ההגשה."
+            android:textSize="16sp"
+            android:padding="8dp" />
+    </ScrollView>
+
+    <!-- כפתור התחל -->
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="8dp"
+        android:text="התחל" />
+
+    <!-- כפתור עצור -->
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/startButton"
+        android:layout_alignParentBottom="true"
+        android:text="עצור" />
+
+</RelativeLayout>
+
