@@ -7,8 +7,13 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://jitpack.io")
+        }
+
     }
 }
 dependencyResolutionManagement {
@@ -21,4 +26,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "recipereach"
 include(":app")
- 
+include(":opencv")

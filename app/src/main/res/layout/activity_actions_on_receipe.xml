@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- כפתור התחלה -->
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="התחל"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp" />
+
+    <!-- כפתור עצירה -->
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="עצור"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/startButton"
+        android:layout_marginTop="20dp" />
+
+    <!-- תצוגת טקסט עבור תוצאה -->
+    <TextView
+        android:id="@+id/resultTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="המחווה תוצג כאן"
+        android:layout_below="@id/stopButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>
+

@@ -3,11 +3,14 @@ import org.gradle.api.JavaVersion
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.chaquo.python")
 }
+
 
 android {
     namespace = "com.example.recipereach"
     compileSdk = 34
+
 
     defaultConfig {
         applicationId = "com.example.recipereach"
@@ -15,6 +18,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        ndk {
+            // On Apple silicon, you can omit x86_64.
+            abiFilters += listOf("arm64-v8a", "x86_64")
+        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -50,6 +57,20 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+
+}
+
+chaquopy {
+    defaultConfig {
+            pip {
+                install ("opencv-python")
+            }
+
+
+    }
+    productFlavors { }
+    sourceSets { }
 }
 
 dependencies {
@@ -79,11 +100,42 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(libs.tensorflow.lite)
-    implementation(libs.tensorflow.lite.support)
-    implementation(libs.tensorflow.lite.task.vision)
-    implementation(libs.vision.hands) // לזיהוי ידיים
-    implementation(libs.camera.core)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
+
+//    implementation("com.google.mediapipe:tasks-vision:latest.release")
+//    implementation("com.google.mediapipe:solutions-hands:latest.release")
+//    implementation("com.google.mediapipe:solution-core:0.10.0")
+//    implementation("com.google.mediapipe:tasks-vision:latest.release")
+
+//    implementation(libs.tensorflow.lite)
+//    implementation(libs.tensorflow.lite.support)
+//    implementation(libs.tensorflow.lite.task.vision)
+//    implementation(libs.vision.hands) // לזיהוי ידיים
+//    implementation(libs.camera.core)
+//    implementation(libs.camera.camera2)
+//    implementation(libs.camera.lifecycle)
+//
+//
+//    implementation("androidx.camera:camera-view:1.2.0")
+//    //implementation("com.google.mediapipe:tasks-vision:latest.release")
+//
+//    implementation("androidx.camera:camera-core") // ללא גרסה
+//    implementation("androidx.camera:camera-camera2")
+//    implementation("androidx.camera:camera-lifecycle")
+//    implementation("androidx.camera:camera-view")
+//    implementation("androidx.camera:camera-extensions")
+    //implementation("com.github.User:Repo:Version")
+
+    // MediaPipe
+    implementation("com.google.mediapipe:tasks-vision:0.10.9")
+
+    // CameraX
+    implementation("androidx.camera:camera-core:1.4.0")
+    implementation("androidx.camera:camera-camera2:1.4.0")
+    implementation("androidx.camera:camera-lifecycle:1.4.0")
+    implementation("androidx.camera:camera-view:1.4.0")
+    implementation(project(":opencv"))
+
+
 }
+
+
