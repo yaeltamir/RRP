@@ -105,47 +105,4 @@ public class CameraTempActivity extends AppCompatActivity {
     }
 }
 
-//import android.os.Bundle;
-//import android.util.Log;
-//
-//import androidx.annotation.NonNull;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.camera.core.Camera;
-//import androidx.camera.core.CameraSelector;
-//import androidx.camera.core.Preview;
-//import androidx.camera.lifecycle.ProcessCameraProvider;
-//import androidx.camera.view.PreviewView;
-//import androidx.core.content.ContextCompat;
-//
-//import com.google.common.util.concurrent.ListenableFuture;
-//
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//
-//public class CameraTempActivity extends AppCompatActivity {
-//
-//    private PreviewView previewView;
-//    private ExecutorService cameraExecutor;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_camera_temp);
-//
-//        previewView = findViewById(R.id.view_finder);
-//        cameraExecutor = Executors.newSingleThreadExecutor();
-//
-//        startCamera();
-//    }
-//
-//    private void startCamera() {
-//
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        cameraExecutor.shutdown();
-//    }
-//}
 
