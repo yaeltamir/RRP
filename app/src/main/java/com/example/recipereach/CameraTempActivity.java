@@ -1,7 +1,11 @@
 package com.example.recipereach;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -23,6 +27,8 @@ import com.google.mediapipe.framework.image.BitmapImageBuilder;
 import com.google.mediapipe.framework.image.MPImage;
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,13 +76,14 @@ public class CameraTempActivity extends AppCompatActivity {
                         .setBaseOptions(BaseOptions.builder()
                                 .setModelAssetPath("hand_landmarker.task")
                                 .build())
-                        .setResultListener(
-                                (result, inputImage) -> {
-                                    analyzeImage(result);
-                                    // עבד את תוצאות נקודות הציון של היד כאן
-                                    // ...
-                                })
-                        .setRunningMode(RunningMode.LIVE_STREAM)
+//                        .setResultListener(
+//                                (result, inputImage) -> {
+//                                    analyzeImage(result);
+//                                    // עבד את תוצאות נקודות הציון של היד כאן
+//                                    // ...
+//                                })
+                        .setNumHands(1)
+                        .setRunningMode(RunningMode.IMAGE)
 
                         .build();
 
@@ -181,54 +188,96 @@ public class CameraTempActivity extends AppCompatActivity {
     private void analyzeImage(@NonNull ImageProxy image) {
         try {
             Log.d("CameraX", "in analyze image");
-            HandLandmarkerResult result = handLandmarker.detect(detectLiveStream(image,true),
-                    ImageProcessingOptions.builder().build());
+
+            MPImage mpImage = detectLiveStream(image, true);
+            if (handLandmarker == null) {
+                Log.i("HandLandmarker", "HandLandmarker is not initialized");
+                HandLandmarker.HandLandmarkerOptions options = HandLandmarker.HandLandmarkerOptions.builder()
+                        .setBaseOptions(BaseOptions.builder()
+                                .setModelAssetPath("hand_landmarker.task")
+                                .build())
+//                        .setResultListener(
+//                                (result, inputImage) -> {
+//                                    analyzeImage(result);
+//                                    // עבד את תוצאות נקודות הציון של היד כאן
+//                                    // ...
+//                                })
+                        .setNumHands(1)
+                        .setRunningMode(RunningMode.IMAGE)
+
+                        .build();
+
+                handLandmarker = HandLandmarker.createFromOptions(this, options);
+                Log.i("HandLandmarker", "HandLandmarker is initialized");
+                return;
+            }
+
+            // עיבוד התמונה לזיהוי
+            HandLandmarkerResult result = handLandmarker.detect(mpImage, ImageProcessingOptions.builder().build());
 
             // הדפסת נקודות הציון
-            for (int i = 0; i < result.landmarks().size(); i++) {
-                List<NormalizedLandmark> landmarks = result.landmarks().get(i);
+            for (List<NormalizedLandmark> landmarks : result.landmarks()) {
+                int i=0;
                 for (NormalizedLandmark landmark : landmarks) {
-                    Log.d("MediaPipe", "Landmark: (" + landmark.x() + ", " + landmark.y() + ")");
+                    Log.d("MediaPipe", "Landmark "+i+": (" + landmark.x() + ", " + landmark.y() + ")");
+                    i++;
                 }
             }
-            handTracker.setHandDetectionListener(landmarks -> {
-                for (NormalizedLandmark landmark : landmarks) {
-                    Log.d("HandTracker", "Landmark: (" + landmark.x() + ", " + landmark.y() + ")");
-                }
-            });
 
         } catch (Exception e) {
             Log.e("MediaPipe", "Error analyzing image", e);
         } finally {
+            // סגירת התמונה כדי לשחרר משאבים
             image.close();
         }
     }
 
-       public MPImage detectLiveStream(ImageProxy imageProxy, boolean isFrontCamera) {
+    public MPImage detectLiveStream(ImageProxy imageProxy, boolean isFrontCamera) {
+        Bitmap bitmap = convertImageProxyToBitmap(imageProxy);
 
-
-        long frameTime = SystemClock.uptimeMillis();
-
-        Bitmap bitmapBuffer = Bitmap.createBitmap(imageProxy.getWidth(), imageProxy.getHeight(), Bitmap.Config.ARGB_8888);
-        try {
-            bitmapBuffer.copyPixelsFromBuffer(imageProxy.getPlanes()[0].getBuffer());
-        } finally {
-            imageProxy.close();
-        }
-
-
+        // סיבוב התמונה לפי המידע מ-ImageProxy
         Matrix matrix = new Matrix();
         matrix.postRotate(imageProxy.getImageInfo().getRotationDegrees());
 
         if (isFrontCamera) {
-            matrix.postScale(-1f, 1f, imageProxy.getWidth(), imageProxy.getHeight());
+            matrix.postScale(-1f, 1f, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
         }
 
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmapBuffer, 0, 0, bitmapBuffer.getWidth(), bitmapBuffer.getHeight(), matrix, true);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-        MPImage mpImage = new BitmapImageBuilder(rotatedBitmap).build();
-        return mpImage;
-}
+        return new BitmapImageBuilder(rotatedBitmap).build();
+    }
+
+    private Bitmap convertImageProxyToBitmap(ImageProxy imageProxy) {
+        ImageProxy.PlaneProxy[] planes = imageProxy.getPlanes();
+        if (planes.length < 3) {
+            throw new IllegalStateException("ImageProxy does not contain all required planes.");
+        }
+
+        ByteBuffer yBuffer = planes[0].getBuffer(); // Y
+        ByteBuffer uBuffer = planes[1].getBuffer(); // U
+        ByteBuffer vBuffer = planes[2].getBuffer(); // V
+
+        int ySize = yBuffer.remaining();
+        int uSize = uBuffer.remaining();
+        int vSize = vBuffer.remaining();
+
+        // איחוד הנתונים של YUV
+        byte[] nv21 = new byte[ySize + uSize + vSize];
+        yBuffer.get(nv21, 0, ySize);
+        vBuffer.get(nv21, ySize, vSize);
+        uBuffer.get(nv21, ySize + vSize, uSize);
+
+        // המרת NV21 ל-Bitmap בפורמט ARGB_8888
+        YuvImage yuvImage = new YuvImage(nv21, ImageFormat.NV21, imageProxy.getWidth(), imageProxy.getHeight(), null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        yuvImage.compressToJpeg(new Rect(0, 0, imageProxy.getWidth(), imageProxy.getHeight()), 100, outputStream);
+        byte[] jpegBytes = outputStream.toByteArray();
+
+        return BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.length);
+    }
+
+
 //        detectAsync(mpImage, frameTime);
 //    }
 //    @VisibleForTesting
