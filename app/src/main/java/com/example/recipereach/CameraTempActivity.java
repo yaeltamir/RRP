@@ -196,35 +196,6 @@ public class CameraTempActivity extends AppCompatActivity {
                     Log.d("HandTracker", "Landmark: (" + landmark.x() + ", " + landmark.y() + ")");
                 }
             });
-        /*
-        * private void analyzeImage(@NonNull ImageProxy image) {
-    try {
-        // המרת התמונה לפורמט של MediaPipe
-        com.google.mediapipe.tasks.vision.core.Image mpImage =
-                com.google.mediapipe.tasks.vision.core.Image.createFromImageProxy(image);
-
-        // ניתוח תמונה
-        HandLandmarkerResult result = handLandmarker.detect(mpImage,
-                ImageProcessingOptions.builder().build());
-
-        // הדפסת נקודות הציון
-        for (int i = 0; i < result.handLandmarks().size(); i++) {
-            List<NormalizedLandmark> landmarks = result.handLandmarks().get(i);
-            for (NormalizedLandmark landmark : landmarks) {
-                Log.d("MediaPipe", "Landmark: (" + landmark.x() + ", " + landmark.y() + ")");
-            }
-        }
-
-    } catch (Exception e) {
-        Log.e("MediaPipe", "Error analyzing image", e);
-    } finally {
-        image.close();
-    }
-}
-*/
-
-            // ניתוח התמונה
-           // handTracker.detectHandLandmarks(image);
 
         } catch (Exception e) {
             Log.e("MediaPipe", "Error analyzing image", e);
@@ -234,9 +205,7 @@ public class CameraTempActivity extends AppCompatActivity {
     }
 
        public MPImage detectLiveStream(ImageProxy imageProxy, boolean isFrontCamera) {
-//        if (runningMode != RunningMode.LIVE_STREAM) {
-//            throw new IllegalArgumentException("Attempting to call detectLiveStream while not using RunningMode.LIVE_STREAM");
-//        }
+
 
         long frameTime = SystemClock.uptimeMillis();
 
