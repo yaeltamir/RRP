@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.chaquo.python")
+
 }
 
 
@@ -127,6 +128,7 @@ dependencies {
 
     // MediaPipe
     implementation("com.google.mediapipe:tasks-vision:0.10.9")
+
 
     // CameraX
     implementation("androidx.camera:camera-core:1.4.0")
