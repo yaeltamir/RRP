@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
-
+//ניסיון להרצת קבצי פייתון
 public class ActionsOnRecipeActivity extends AppCompatActivity {
 
     private boolean isRunning = false;

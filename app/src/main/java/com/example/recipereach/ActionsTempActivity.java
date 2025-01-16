@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//זהו ניסיון להפעלת פעולות על המסך בלחיצת כפתור, ישמש כבסיס בעתיד
 public class ActionsTempActivity extends AppCompatActivity {
 
     private TextView longTextView;

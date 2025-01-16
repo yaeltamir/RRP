@@ -37,6 +37,10 @@ public class OverlayView extends View {
         this.points = points;
         invalidate(); // עדכון התצוגה
     }
+    public void clear(){
+        this.points=new ArrayList<>();
+        invalidate();
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

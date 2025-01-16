@@ -8,9 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
-import android.view.TextureView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,25 +36,18 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.mediapipe.tasks.core.BaseOptions;
 import com.google.mediapipe.tasks.vision.core.RunningMode;
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker;
+import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker.HandLandmarkerOptions;
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult;
 import com.google.mediapipe.tasks.vision.core.ImageProcessingOptions;
-import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
-
-import java.util.List;
-
-
 
 public class CameraTempActivity extends AppCompatActivity {
 
     private PreviewView previewView;
-
     private ExecutorService cameraExecutor;
-    private HandTracker handTracker;
     private HandLandmarker handLandmarker;
     private OverlayView overlayView;
     private static final int CAMERA_PERMISSION_CODE = 100;
@@ -66,42 +57,21 @@ public class CameraTempActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_temp);
 
+        //initialize components of the activity view
         previewView = findViewById(R.id.view_finder);
         cameraExecutor = Executors.newSingleThreadExecutor();
         overlayView =findViewById(R.id.overlayView);
 
+        //checks camera permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     CAMERA_PERMISSION_CODE);
         } else {
-            try {
-                HandLandmarker.HandLandmarkerOptions options = HandLandmarker.HandLandmarkerOptions.builder()
-                        .setBaseOptions(BaseOptions.builder()
-                                .setModelAssetPath("hand_landmarker.task")
-                                .build())
-//                        .setResultListener(
-//                                (result, inputImage) -> {
-//                                    analyzeImage(result);
-//                                    // עבד את תוצאות נקודות הציון של היד כאן
-//                                    // ...
-//                                })
-                        .setNumHands(1)
-                        .setRunningMode(RunningMode.IMAGE)
-
-                        .build();
-
-                handLandmarker = HandLandmarker.createFromOptions(this, options);
-                Log.d("CameraX", "finish on create ");
-            } catch (Exception e) {
-                Log.e("MediaPipe", "Error initializing HandLandmarker", e);
-            }
-
-            // handTracker = new HandTracker(this);
+            setHandLandmarker();
             startCamera();
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -114,33 +84,24 @@ public class CameraTempActivity extends AppCompatActivity {
             Log.e("Permission", "Camera permission denied.");
         }
     }
+    public void setHandLandmarker(){
+        try {
+            HandLandmarkerOptions options = HandLandmarkerOptions.builder()
+                    .setBaseOptions(BaseOptions.builder().setModelAssetPath("hand_landmarker.task")
+                            .build())
+                    .setNumHands(1)
+                    .setRunningMode(RunningMode.IMAGE)
+                    .build();
+
+            handLandmarker = HandLandmarker.createFromOptions(this, options);
+            Log.i("HandLandmarker", "finish setting handLandmarker");
+        } catch (Exception e) {
+            Log.e("MediaPipe", "Error initializing HandLandmarker", e);
+        }
+    }
 
     private void startCamera() {
-        Log.d("CameraX", "start camera 1");
-//        ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
-//                ProcessCameraProvider.getInstance(this);
-//
-//        cameraProviderFuture.addListener(() -> {
-//            try {
-//                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-//
-//                CameraSelector cameraSelector = new CameraSelector.Builder()
-//                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-//                        .build();
-//
-//                Preview preview = new Preview.Builder().build();
-//                preview.setSurfaceProvider(previewView.getSurfaceProvider());
-//
-//                Camera camera = cameraProvider.bindToLifecycle(
-//                        this,
-//                        cameraSelector,
-//                        preview
-//                );
-//
-//            } catch (Exception e) {
-//                Log.e("CameraX", "Error starting camera", e);
-//            }
-//        }, ContextCompat.getMainExecutor(this));
+        Log.i("Camera", "start camera");
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
                 ProcessCameraProvider.getInstance(this);
 
@@ -149,18 +110,15 @@ public class CameraTempActivity extends AppCompatActivity {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                        .build();
+                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build();
 
                 Preview preview = new Preview.Builder().build();
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
                 ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build();
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
 
                 imageAnalysis.setAnalyzer(cameraExecutor, this::analyzeImage);
-
 
                 Camera camera = cameraProvider.bindToLifecycle(
                         this,
@@ -168,103 +126,75 @@ public class CameraTempActivity extends AppCompatActivity {
                         preview,
                         imageAnalysis
                 );
-                Log.d("CameraX", "in start camera");
 
             } catch (Exception e) {
-
-                Log.e("CameraX", "Error starting camera", e);
-                e.printStackTrace();
+                Log.e("Camera", "Error starting camera", e);
             }
         }, ContextCompat.getMainExecutor(this));
     }
 
-
-    private void analyzeImage(HandLandmarkerResult result) {
-        Log.d("CameraX", "start camera analyzing");
-        for (int i = 0; i < result.landmarks().size(); i++) {
-            List<NormalizedLandmark> landmarks = result.landmarks().get(i);
-            for (NormalizedLandmark landmark : landmarks) {
-                Log.d("MediaPipe", "Landmark: (" + landmark.x() + ", " + landmark.y() + ")");
-            }
-        }
-        Log.d("CameraX", "finish analyzing");
-    }
     private void analyzeImage(@NonNull ImageProxy image) {
         try {
-            Log.d("CameraX", "in analyze image");
+            Log.i("Analyze", "start analyzing");
 
-            MPImage mpImage = detectLiveStream(image, true);
+            MPImage mpImage = createMPImage(image);
             if (handLandmarker == null) {
-                Log.i("HandLandmarker", "HandLandmarker is not initialized");
-                HandLandmarker.HandLandmarkerOptions options = HandLandmarker.HandLandmarkerOptions.builder()
-                        .setBaseOptions(BaseOptions.builder()
-                                .setModelAssetPath("hand_landmarker.task")
-                                .build())
-//                        .setResultListener(
-//                                (result, inputImage) -> {
-//                                    analyzeImage(result);
-//                                    // עבד את תוצאות נקודות הציון של היד כאן
-//                                    // ...
-//                                })
-                        .setNumHands(1)
-                        .setRunningMode(RunningMode.IMAGE)
-
-                        .build();
-
-                handLandmarker = HandLandmarker.createFromOptions(this, options);
-                Log.i("HandLandmarker", "HandLandmarker is initialized");
+                Log.e("Analyze", "handLandmarker is not initialized");
                 return;
             }
 
-            // עיבוד התמונה לזיהוי
-            HandLandmarkerResult result = handLandmarker.detect(mpImage, ImageProcessingOptions.builder().build());
+            //landmarks detection
+            ImageProcessingOptions imgProcessingOpts=ImageProcessingOptions.builder().build();
+            HandLandmarkerResult result = handLandmarker.detect(mpImage, imgProcessingOpts);
 
-            List<PointF> points = new ArrayList<>();
-            // הדפסת נקודות הציון
-            for (List<NormalizedLandmark> landmarks : result.landmarks()) {
-                int i=0;
-                for (NormalizedLandmark landmark : landmarks) {
-                    Log.d("MediaPipe", "Landmark "+i+": (" + landmark.x() + ", " + landmark.y() + ")");
-                    i++;
-                }
-            }
-
-
-        for (int i = 0; i < result.landmarks().size(); i++) {
-            List<NormalizedLandmark> landmarks = result.landmarks().get(i);
-            for (NormalizedLandmark landmark : landmarks) {
-                // המרה לנקודות מסך
-                float x = landmark.x() * previewView.getWidth();
-                float y = landmark.y() * previewView.getHeight();
-                points.add(new PointF(x, y));
-            }
-        }
-
-        // עדכון ה-Overlay
-
-            runOnUiThread(() -> overlayView.setPoints(points));
-
+            //here we can whatever we like with the founded landmarks
+            printLandmarks(result.landmarks());
+            visualizeOnScreen(result.landmarks());
 
         } catch (Exception e) {
-            Log.e("MediaPipe", "Error analyzing image", e);
+            Log.e("Analyze", "Error analyzing image", e);
         } finally {
-            // סגירת התמונה כדי לשחרר משאבים
+            // release resources
             image.close();
         }
     }
 
-    public MPImage detectLiveStream(ImageProxy imageProxy, boolean isFrontCamera) {
-        Bitmap bitmap = convertImageProxyToBitmap(imageProxy);
+    //handLandmarks [[[x0,y0],...[x20,y20]]]
+    private void printLandmarks(List<List<NormalizedLandmark>> handLandmarks) {
+        if(handLandmarks.isEmpty())
+            return;
+        int i=0;
+        for (NormalizedLandmark landmark : handLandmarks.get(0)) {
+            Log.d("MediaPipe","Landmark "+i+":(" + landmark.x()+ ", "+ landmark.y()+ ")");
+            i++;
+        }
+    }
 
-        // סיבוב התמונה לפי המידע מ-ImageProxy
-        Matrix matrix = new Matrix();
-        matrix.postRotate(imageProxy.getImageInfo().getRotationDegrees());
-
-        if (isFrontCamera) {
-            matrix.postScale(-1f, 1f, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
+    //handLandmarks [[[x0,y0],...[x20,y20]]]
+    private void visualizeOnScreen(List<List<NormalizedLandmark>> handLandmarks){
+        if(handLandmarks.isEmpty()) {
+            runOnUiThread(() -> overlayView.clear());
+            return;
+        }
+        List<PointF> points = new ArrayList<>();
+        for (NormalizedLandmark landmark : handLandmarks.get(0)) {
+            // converting to points on the screen
+            float x = landmark.x() * previewView.getWidth();
+            float y = landmark.y() * previewView.getHeight();
+            points.add(new PointF(x, y));
         }
 
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        runOnUiThread(() -> overlayView.setPoints(points));
+    }
+
+
+    private MPImage createMPImage(ImageProxy imageProxy) {
+        Bitmap bitmap = convertImageProxyToBitmap(imageProxy);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(imageProxy.getImageInfo().getRotationDegrees());
+        matrix.postScale(-1f, 1f, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
 
         return new BitmapImageBuilder(rotatedBitmap).build();
     }
@@ -297,18 +227,6 @@ public class CameraTempActivity extends AppCompatActivity {
 
         return BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.length);
     }
-
-
-//        detectAsync(mpImage, frameTime);
-//    }
-//    @VisibleForTesting
-//    public void detectAsync(MPImage mpImage, long frameTime) {
-//        if (handLandmarker != null) {
-//            handLandmarker.detectAsync(mpImage, frameTime);
-//        }
-//    }
-
-
 
     @Override
     protected void onDestroy() {

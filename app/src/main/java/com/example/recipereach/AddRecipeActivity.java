@@ -44,23 +44,8 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // Get writable database
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        dbHelper.addRecipe(title,description);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // Insert recipe into database
-//        ContentValues values = new ContentValues();
-//        values.put("title", title);
-//        values.put("description", description);
-//
-//        long newRowId = db.insert("recipes", null, values);
-//
-//        if (newRowId == -1) {
-          Toast.makeText(this, "Failed to save recipe", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
-//            finish(); // Close the activity
-//        }
-//
-//        db.close();
+        dbHelper.addRecipe(title, description);
+
+        Toast.makeText(this, "saved recipe", Toast.LENGTH_SHORT).show();
     }
 }
