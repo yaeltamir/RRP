@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,6 +58,7 @@ public class CameraTempActivity extends AppCompatActivity {
     private ExecutorService cameraExecutor;
     private HandTracker handTracker;
     private HandLandmarker handLandmarker;
+    private OverlayView overlayView;
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     @Override
@@ -65,6 +68,7 @@ public class CameraTempActivity extends AppCompatActivity {
 
         previewView = findViewById(R.id.view_finder);
         cameraExecutor = Executors.newSingleThreadExecutor();
+        overlayView =findViewById(R.id.overlayView);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -215,6 +219,7 @@ public class CameraTempActivity extends AppCompatActivity {
             // עיבוד התמונה לזיהוי
             HandLandmarkerResult result = handLandmarker.detect(mpImage, ImageProcessingOptions.builder().build());
 
+            List<PointF> points = new ArrayList<>();
             // הדפסת נקודות הציון
             for (List<NormalizedLandmark> landmarks : result.landmarks()) {
                 int i=0;
@@ -223,6 +228,22 @@ public class CameraTempActivity extends AppCompatActivity {
                     i++;
                 }
             }
+
+
+        for (int i = 0; i < result.landmarks().size(); i++) {
+            List<NormalizedLandmark> landmarks = result.landmarks().get(i);
+            for (NormalizedLandmark landmark : landmarks) {
+                // המרה לנקודות מסך
+                float x = landmark.x() * previewView.getWidth();
+                float y = landmark.y() * previewView.getHeight();
+                points.add(new PointF(x, y));
+            }
+        }
+
+        // עדכון ה-Overlay
+
+            runOnUiThread(() -> overlayView.setPoints(points));
+
 
         } catch (Exception e) {
             Log.e("MediaPipe", "Error analyzing image", e);
