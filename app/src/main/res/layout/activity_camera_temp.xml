@@ -4,12 +4,17 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp" />
 
     <!-- שכבת האוברליי -->
     <com.example.recipereach.OverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        android:layout_gravity="bottom|end" />
+
 </FrameLayout>

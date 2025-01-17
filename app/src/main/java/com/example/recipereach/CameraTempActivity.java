@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.widget.FrameLayout;
 
 import androidx.core.app.ActivityCompat;
 
@@ -61,6 +63,18 @@ public class CameraTempActivity extends AppCompatActivity {
         previewView = findViewById(R.id.view_finder);
         cameraExecutor = Executors.newSingleThreadExecutor();
         overlayView =findViewById(R.id.overlayView);
+        //---------------------------------------------------------------------------------------
+//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) previewView.getLayoutParams();
+////// שינוי הגובה והרוחב
+//        params.width = previewView.getWidth(); // רוחב חדש בפיקסלים
+//        params.height = previewView.getHeight(); // גובה חדש בפיקסלים
+//        FrameLayout.LayoutParams paramsPV = (FrameLayout.LayoutParams)previewView.getLayoutParams();
+//        params.gravity=paramsPV.gravity;
+//        params.bottomMargin=params.leftMargin=paramsPV.leftMargin;
+//
+//// עדכון הפריסה
+//        overlayView.setLayoutParams(params);
+        //---------------------------------------------------------------------------------------
 
         //checks camera permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -179,8 +193,43 @@ public class CameraTempActivity extends AppCompatActivity {
         List<PointF> points = new ArrayList<>();
         for (NormalizedLandmark landmark : handLandmarks.get(0)) {
             // converting to points on the screen
-            float x = landmark.x() * previewView.getWidth();
-            float y = landmark.y() * previewView.getHeight();
+
+            //------------------------------------------------------------------------------------
+            FrameLayout.LayoutParams paramsPV = (FrameLayout.LayoutParams)previewView.getLayoutParams();
+            // ודא שהנקודות מנורמלות לגודל של ה-OverlayView
+            float xBn=landmark.x();
+            float yBn=landmark.y();
+
+            float normalizedX = (float) (xBn/Math.sqrt(xBn*xBn+yBn*yBn));
+            float normalizedY = (float) (yBn/Math.sqrt(xBn*xBn+yBn*yBn)) ;
+            int[] loc=new int[2];
+            previewView.getLocationOnScreen(loc);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) previewView.getLayoutParams();
+//// שינוי הגובה והרוחב
+//            params.width = previewView.getWidth(); // רוחב חדש בפיקסלים
+//            params.height = previewView.getHeight(); // גובה חדש בפיקסלים
+
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            float density = metrics.density; // גורם הצפיפות
+            int px = 394; // לדוגמה, אורך בפיקסלים
+            float dp = px / getResources().getDisplayMetrics().density;
+            Log.i("LOC","dp: "+dp);
+
+// המרת הנקודות לגודל האמיתי של ה-OverlayView
+            float x = xBn * params.width;
+            float y = yBn * params.height+loc[1];
+            Log.i("LOC","calculated= ("+x+","+y+")");
+            Log.i("LOC","pv loc= ("+loc[0]+","+loc[1]+")");
+            Log.i("LOC","original= ("+normalizedX+","+normalizedY+")");
+            Log.i("LOC","pv lay= (w:"+params.width+",h:"+params.height+")");
+            Log.i("LOC","pv size= (w:"+previewView.getWidth()+",h:"+previewView.getHeight()+")");
+
+// צייר את הנקודות על גבי ה-OverlayView
+
+
+//            float x = landmark.x() * previewView.getWidth();
+//            float y = landmark.y() * previewView.getHeight();
+            //------------------------------------------------------------------------------------
             points.add(new PointF(x, y));
         }
 
