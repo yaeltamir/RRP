@@ -38,6 +38,7 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 
@@ -54,10 +55,12 @@ public class CameraTempActivity extends AppCompatActivity {
     private ExecutorService cameraExecutor;
     private HandLandmarker handLandmarker;
     private OverlayView overlayView;
-    private Button startButton,endButton;
+    private Button startButton,endButton,editButton;
+    private TextView receipe;
 
     private boolean start=false;
     private ProcessCameraProvider cameraProvider;
+
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     @Override
@@ -71,6 +74,8 @@ public class CameraTempActivity extends AppCompatActivity {
         overlayView =findViewById(R.id.overlayView);
         startButton=findViewById(R.id.startButton);
         endButton=findViewById(R.id.endButton);
+        editButton=findViewById(R.id.editButton);
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,12 +86,7 @@ public class CameraTempActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(CameraTempActivity.this,
                             new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
                 } else {
-                    if(!start) {
-                        setHandLandmarker();
-                        start=true;
-                    }
                     startCamera();
-
                 }
             }
         });
@@ -94,6 +94,13 @@ public class CameraTempActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopCamera();
+            }
+        });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                receipe=findViewById(R.id.receipeText);
+                receipe.setText("edit...");
             }
         });
     }
@@ -104,7 +111,8 @@ public class CameraTempActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startCamera();
+            setHandLandmarker();
+            startButton.performClick();
         } else {
             Log.e("Permission", "Camera permission denied.");
         }
@@ -152,6 +160,7 @@ public class CameraTempActivity extends AppCompatActivity {
                         imageAnalysis
                 );
                 previewView.setVisibility(View.VISIBLE);
+                editButton.setVisibility(View.GONE);
 
             } catch (Exception e) {
                 Log.e("Camera", "Error starting camera", e);
@@ -164,6 +173,7 @@ public class CameraTempActivity extends AppCompatActivity {
             cameraProvider.unbindAll();
             cameraProvider = null;
             previewView.setVisibility(View.INVISIBLE);
+            editButton.setVisibility(View.VISIBLE);
             Log.i("Camera", "Camera stopped");
         }
     }
