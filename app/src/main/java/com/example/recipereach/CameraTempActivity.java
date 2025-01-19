@@ -35,6 +35,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.core.app.ActivityCompat;
@@ -52,6 +54,10 @@ public class CameraTempActivity extends AppCompatActivity {
     private ExecutorService cameraExecutor;
     private HandLandmarker handLandmarker;
     private OverlayView overlayView;
+    private Button startButton,endButton;
+
+    private boolean start=false;
+    private ProcessCameraProvider cameraProvider;
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     @Override
@@ -63,28 +69,33 @@ public class CameraTempActivity extends AppCompatActivity {
         previewView = findViewById(R.id.view_finder);
         cameraExecutor = Executors.newSingleThreadExecutor();
         overlayView =findViewById(R.id.overlayView);
-        //---------------------------------------------------------------------------------------
-//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) previewView.getLayoutParams();
-////// שינוי הגובה והרוחב
-//        params.width = previewView.getWidth(); // רוחב חדש בפיקסלים
-//        params.height = previewView.getHeight(); // גובה חדש בפיקסלים
-//        FrameLayout.LayoutParams paramsPV = (FrameLayout.LayoutParams)previewView.getLayoutParams();
-//        params.gravity=paramsPV.gravity;
-//        params.bottomMargin=params.leftMargin=paramsPV.leftMargin;
-//
-//// עדכון הפריסה
-//        overlayView.setLayoutParams(params);
-        //---------------------------------------------------------------------------------------
+        startButton=findViewById(R.id.startButton);
+        endButton=findViewById(R.id.endButton);
 
-        //checks camera permissions
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION_CODE);
-        } else {
-            setHandLandmarker();
-            startCamera();
-        }
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //checks camera permissions
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CameraTempActivity.this,
+                            new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                } else {
+                    if(!start) {
+                        setHandLandmarker();
+                        start=true;
+                    }
+                    startCamera();
+
+                }
+            }
+        });
+        endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopCamera();
+            }
+        });
     }
 
     @Override
@@ -121,7 +132,7 @@ public class CameraTempActivity extends AppCompatActivity {
 
         cameraProviderFuture.addListener(() -> {
             try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                cameraProvider = cameraProviderFuture.get();
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
                         .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build();
@@ -140,12 +151,23 @@ public class CameraTempActivity extends AppCompatActivity {
                         preview,
                         imageAnalysis
                 );
+                previewView.setVisibility(View.VISIBLE);
 
             } catch (Exception e) {
                 Log.e("Camera", "Error starting camera", e);
             }
         }, ContextCompat.getMainExecutor(this));
     }
+
+    private void stopCamera() {
+        if (cameraProvider != null) {
+            cameraProvider.unbindAll();
+            cameraProvider = null;
+            previewView.setVisibility(View.INVISIBLE);
+            Log.i("Camera", "Camera stopped");
+        }
+    }
+
 
     private void analyzeImage(@NonNull ImageProxy image) {
         try {
@@ -192,44 +214,29 @@ public class CameraTempActivity extends AppCompatActivity {
         }
         List<PointF> points = new ArrayList<>();
         for (NormalizedLandmark landmark : handLandmarks.get(0)) {
+
             // converting to points on the screen
 
-            //------------------------------------------------------------------------------------
-            FrameLayout.LayoutParams paramsPV = (FrameLayout.LayoutParams)previewView.getLayoutParams();
-            // ודא שהנקודות מנורמלות לגודל של ה-OverlayView
             float xBn=landmark.x();
             float yBn=landmark.y();
+//            float normalizedX = (float) (xBn/Math.sqrt(xBn*xBn+yBn*yBn));
+//            float normalizedY = (float) (yBn/Math.sqrt(xBn*xBn+yBn*yBn)) ;
 
-            float normalizedX = (float) (xBn/Math.sqrt(xBn*xBn+yBn*yBn));
-            float normalizedY = (float) (yBn/Math.sqrt(xBn*xBn+yBn*yBn)) ;
             int[] loc=new int[2];
             previewView.getLocationOnScreen(loc);
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) previewView.getLayoutParams();
-//// שינוי הגובה והרוחב
-//            params.width = previewView.getWidth(); // רוחב חדש בפיקסלים
-//            params.height = previewView.getHeight(); // גובה חדש בפיקסלים
 
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
-            float density = metrics.density; // גורם הצפיפות
-            int px = 394; // לדוגמה, אורך בפיקסלים
-            float dp = px / getResources().getDisplayMetrics().density;
-            Log.i("LOC","dp: "+dp);
-
-// המרת הנקודות לגודל האמיתי של ה-OverlayView
             float x = xBn * params.width;
             float y = yBn * params.height+loc[1];
             Log.i("LOC","calculated= ("+x+","+y+")");
             Log.i("LOC","pv loc= ("+loc[0]+","+loc[1]+")");
-            Log.i("LOC","original= ("+normalizedX+","+normalizedY+")");
+           // Log.i("LOC","original= ("+normalizedX+","+normalizedY+")");
             Log.i("LOC","pv lay= (w:"+params.width+",h:"+params.height+")");
             Log.i("LOC","pv size= (w:"+previewView.getWidth()+",h:"+previewView.getHeight()+")");
 
-// צייר את הנקודות על גבי ה-OverlayView
-
-
 //            float x = landmark.x() * previewView.getWidth();
 //            float y = landmark.y() * previewView.getHeight();
-            //------------------------------------------------------------------------------------
+
             points.add(new PointF(x, y));
         }
 
