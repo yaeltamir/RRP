@@ -102,32 +102,12 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
 
-//    implementation("com.google.mediapipe:tasks-vision:latest.release")
-//    implementation("com.google.mediapipe:solutions-hands:latest.release")
-//    implementation("com.google.mediapipe:solution-core:0.10.0")
-//    implementation("com.google.mediapipe:tasks-vision:latest.release")
-
-//    implementation(libs.tensorflow.lite)
-//    implementation(libs.tensorflow.lite.support)
-//    implementation(libs.tensorflow.lite.task.vision)
-//    implementation(libs.vision.hands) // לזיהוי ידיים
-//    implementation(libs.camera.core)
-//    implementation(libs.camera.camera2)
-//    implementation(libs.camera.lifecycle)
-//
-//
-//    implementation("androidx.camera:camera-view:1.2.0")
-//    //implementation("com.google.mediapipe:tasks-vision:latest.release")
-//
-//    implementation("androidx.camera:camera-core") // ללא גרסה
-//    implementation("androidx.camera:camera-camera2")
-//    implementation("androidx.camera:camera-lifecycle")
-//    implementation("androidx.camera:camera-view")
-//    implementation("androidx.camera:camera-extensions")
-    //implementation("com.github.User:Repo:Version")
-
     // MediaPipe
     implementation("com.google.mediapipe:tasks-vision:0.10.9")
+
+    //TensorFlow Lite
+        // implementation("org.tensorflow:tensorflow-lite:2.12.0")
+
 
 
     // CameraX

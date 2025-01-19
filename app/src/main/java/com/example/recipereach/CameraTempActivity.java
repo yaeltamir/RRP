@@ -28,6 +28,7 @@ import com.google.mediapipe.framework.image.MPImage;
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class CameraTempActivity extends AppCompatActivity {
     private Button startButton,endButton,editButton;
     private TextView receipe;
 
-    private boolean start=false;
+    private boolean initialized=false;
     private ProcessCameraProvider cameraProvider;
 
     private static final int CAMERA_PERMISSION_CODE = 100;
@@ -86,6 +87,8 @@ public class CameraTempActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(CameraTempActivity.this,
                             new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
                 } else {
+                    if(!initialized)
+                        setHandLandmarker();
                     startCamera();
                 }
             }
@@ -127,6 +130,7 @@ public class CameraTempActivity extends AppCompatActivity {
                     .build();
 
             handLandmarker = HandLandmarker.createFromOptions(this, options);
+            initialized=true;
             Log.i("HandLandmarker", "finish setting handLandmarker");
         } catch (Exception e) {
             Log.e("MediaPipe", "Error initializing HandLandmarker", e);
@@ -196,6 +200,7 @@ public class CameraTempActivity extends AppCompatActivity {
             //here we can whatever we like with the founded landmarks
             printLandmarks(result.landmarks());
             visualizeOnScreen(result.landmarks());
+            predict_gesture(result.landmarks());
 
         } catch (Exception e) {
             Log.e("Analyze", "Error analyzing image", e);
@@ -203,6 +208,25 @@ public class CameraTempActivity extends AppCompatActivity {
             // release resources
             image.close();
         }
+    }
+
+    private void predict_gesture(List<List<NormalizedLandmark>> handLandmarks) throws IOException {
+        if(handLandmarks.isEmpty())
+            return;
+        GesturePredictor gesturePredictor = new GesturePredictor(getApplicationContext(), "gesture_model.tflite");
+        List<float[]> landmarks = normalizedLandmarktoFloatArray(handLandmarks.get(0));
+
+        String result = gesturePredictor.predictGesture(landmarks);
+        Log.i("predict","prediction"+result);
+    }
+    private List<float[]> normalizedLandmarktoFloatArray(List<NormalizedLandmark> handLandmarks){
+        List<float[]> convertedHandLandmarks = new ArrayList<>();
+        for (NormalizedLandmark handLandmark : handLandmarks) {
+            float[] landmark={handLandmark.x(),handLandmark.y()};
+           // Log.i("predict","Landmark: (" + landmark[0]+ ","+ landmark[1]+ ")");
+            convertedHandLandmarks.add(landmark);
+        }
+        return convertedHandLandmarks;
     }
 
     //handLandmarks [[[x0,y0],...[x20,y20]]]
