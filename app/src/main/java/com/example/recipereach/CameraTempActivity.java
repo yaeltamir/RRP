@@ -8,7 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,9 +36,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -50,17 +52,21 @@ import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker.HandLandm
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult;
 import com.google.mediapipe.tasks.vision.core.ImageProcessingOptions;
 
+import com.example.recipereach.GesturePredictor.labelNames;
+
 public class CameraTempActivity extends AppCompatActivity {
 
     private PreviewView previewView;
     private ExecutorService cameraExecutor;
     private HandLandmarker handLandmarker;
     private OverlayView overlayView;
-    private Button startButton,endButton,editButton;
+    private Button startButton, endButton, editButton;
+    private ScrollView scrollView;
     private TextView receipe;
 
-    private boolean initialized=false;
+    private boolean initialized = false;
     private ProcessCameraProvider cameraProvider;
+    private GesturePredictor gesturePredictor;
 
     private static final int CAMERA_PERMISSION_CODE = 100;
 
@@ -72,11 +78,19 @@ public class CameraTempActivity extends AppCompatActivity {
         //initialize components of the activity view
         previewView = findViewById(R.id.view_finder);
         cameraExecutor = Executors.newSingleThreadExecutor();
-        overlayView =findViewById(R.id.overlayView);
-        startButton=findViewById(R.id.startButton);
-        endButton=findViewById(R.id.endButton);
-        editButton=findViewById(R.id.editButton);
+        overlayView = findViewById(R.id.overlayView);
+        startButton = findViewById(R.id.startButton);
+        endButton = findViewById(R.id.endButton);
+        editButton = findViewById(R.id.editButton);
+        scrollView = findViewById(R.id.scrollView);
+        receipe = findViewById(R.id.receipeText);
 
+
+        try {
+            gesturePredictor = new GesturePredictor(getApplicationContext(), "gesture_model.tflite");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +101,7 @@ public class CameraTempActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(CameraTempActivity.this,
                             new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
                 } else {
-                    if(!initialized)
+                    if (!initialized)
                         setHandLandmarker();
                     startCamera();
                 }
@@ -102,7 +116,7 @@ public class CameraTempActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                receipe=findViewById(R.id.receipeText);
+
                 receipe.setText("edit...");
             }
         });
@@ -120,7 +134,8 @@ public class CameraTempActivity extends AppCompatActivity {
             Log.e("Permission", "Camera permission denied.");
         }
     }
-    public void setHandLandmarker(){
+
+    public void setHandLandmarker() {
         try {
             HandLandmarkerOptions options = HandLandmarkerOptions.builder()
                     .setBaseOptions(BaseOptions.builder().setModelAssetPath("hand_landmarker.task")
@@ -130,7 +145,7 @@ public class CameraTempActivity extends AppCompatActivity {
                     .build();
 
             handLandmarker = HandLandmarker.createFromOptions(this, options);
-            initialized=true;
+            initialized = true;
             Log.i("HandLandmarker", "finish setting handLandmarker");
         } catch (Exception e) {
             Log.e("MediaPipe", "Error initializing HandLandmarker", e);
@@ -178,6 +193,7 @@ public class CameraTempActivity extends AppCompatActivity {
             cameraProvider = null;
             previewView.setVisibility(View.INVISIBLE);
             editButton.setVisibility(View.VISIBLE);
+            overlayView.clear();
             Log.i("Camera", "Camera stopped");
         }
     }
@@ -194,13 +210,13 @@ public class CameraTempActivity extends AppCompatActivity {
             }
 
             //landmarks detection
-            ImageProcessingOptions imgProcessingOpts=ImageProcessingOptions.builder().build();
+            ImageProcessingOptions imgProcessingOpts = ImageProcessingOptions.builder().build();
             HandLandmarkerResult result = handLandmarker.detect(mpImage, imgProcessingOpts);
 
             //here we can whatever we like with the founded landmarks
             printLandmarks(result.landmarks());
             visualizeOnScreen(result.landmarks());
-            predict_gesture(result.landmarks());
+            predictGesture(result.landmarks());
 
         } catch (Exception e) {
             Log.e("Analyze", "Error analyzing image", e);
@@ -210,15 +226,81 @@ public class CameraTempActivity extends AppCompatActivity {
         }
     }
 
-    private void predict_gesture(List<List<NormalizedLandmark>> handLandmarks) throws IOException {
-        if(handLandmarks.isEmpty())
+    private void predictGesture(List<List<NormalizedLandmark>> handLandmarks) {
+        if (handLandmarks.isEmpty())
             return;
-        GesturePredictor gesturePredictor = new GesturePredictor(getApplicationContext(), "gesture_model.tflite");
         List<float[]> landmarks = normalizedLandmarktoFloatArray(handLandmarks.get(0));
-
-        String result = gesturePredictor.predictGesture(landmarks);
-        Log.i("predict","prediction"+result);
+        labelNames prediction = gesturePredictor.predictGesture(landmarks);
+        String result = String.valueOf(prediction);
+        Log.i("predict", "prediction: " + result);
+        perfomAction(prediction);
     }
+
+    private void perfomAction(labelNames prediction) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                float textSize = receipe.getTextSize();// ערך ב-SP
+                Log.i("predict", "text size  " + textSize);
+                float valueInSp = 18; // ערך ב-SP
+                float valueInPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_SP, // היחידה הרצויה
+                        valueInSp,                 // הערך ב-SP
+                        getResources().getDisplayMetrics() // DisplayMetrics של המסך
+                );
+                Log.i("predict", "sp=18 in px= " + valueInPx);
+
+
+                float textSizeToSp = -1;
+                switch (prediction) {
+                    case PALM:
+                        if (receipe.getTextSize() < 200) {
+                            //receipe.setTextSize(textSize+1);
+                            float currentSize = receipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
+                            receipe.setTextSize(currentSize + 1);
+                            // receipe.setTextSize(TypedValue., receipe.getTextSize() + 1);
+                            Log.i("predict", "text size after palm: " + receipe.getTextSize());
+                        }
+                        break;
+                    case GRIP:
+                        if (receipe.getTextSize() > 47) { // מגבלת גודל מינימלי
+                            //receipe.setTextSize(TypedValue.COMPLEX_UNIT_SP, receipe.getTextSize() - 2);
+                            //receipe.setTextSize(textSize-1);
+                            float currentSize = receipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
+                            receipe.setTextSize(currentSize - 1);
+                            Log.i("predict", "text size after grip: " + receipe.getTextSize());
+                        }
+                        break;
+                    case LIKE:
+                        scrollView.smoothScrollBy(0, -receipe.getLineHeight());
+                        break;
+                    case POINT:
+                        stopCamera();
+
+                        break;
+                    case DISLIKE:
+                        scrollView.smoothScrollBy(0, receipe.getLineHeight());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        Log.i("predict", "before scheduling delay");
+        // הוספת השהייה של שנייה אחת לפני המשך הפעולה
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // המשך הפעולה אחרי ההשהייה
+                Log.i("predict", "Action continued after 1 second delay");
+            }
+        }, 1000); // 1000 מילישניות = שנייה אחת
+        Log.i("predict", "After scheduling delay");
+
+
+
+    }
+
     private List<float[]> normalizedLandmarktoFloatArray(List<NormalizedLandmark> handLandmarks){
         List<float[]> convertedHandLandmarks = new ArrayList<>();
         for (NormalizedLandmark handLandmark : handLandmarks) {

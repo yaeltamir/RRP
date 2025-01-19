@@ -9,14 +9,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GesturePredictor {
 
     private final Interpreter tflite;
-    private final String[] labelNames = {"palm", "point", "grip", "like", "dislike", "no_gesture"};
+    public enum labelNames {
+        PALM,
+        POINT,
+        GRIP,
+        LIKE,
+        DISLIKE,
+        NO_GESTURE;
+    }
+
+    //private final String[] labelNames = {"palm", "point", "grip", "like", "dislike", "no_gesture"};
 
     public GesturePredictor(Context context, String modelPath) throws IOException {
        // tflite = new Interpreter(loadModelFile(context, modelPath));
@@ -36,21 +43,26 @@ public class GesturePredictor {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
-    public String predictGesture(List<float[]> handLandmarks) {
+    public labelNames predictGesture(List<float[]> handLandmarks) {
         // הפיכת רשימת נקודות הציון למערך
         float[][] inputArray = flattenCoordinates(handLandmarks, 42); // התאמה לאורך הרצוי
-        float[][] outputArray = new float[1][labelNames.length]; // תוצאת המודל
+        float[][] outputArray = new float[1][labelNames.values().length]; // תוצאת המודל
 
         // הפעלת המודל
         tflite.run(inputArray, outputArray);
 
         // חישוב התוצאה
         int predictedIndex = getMaxIndex(outputArray[0]);
-        Log.i("predict","prediction index: "+predictedIndex);
         float confidence = outputArray[0][predictedIndex];
 
+        if(confidence<0.96){
+            return labelNames.NO_GESTURE;
+        }
         // הדפסת התוצאה
-        return String.format("Label: %s, Confidence: %.2f%%", labelNames[predictedIndex], confidence * 100);
+        Log.i("predict","prediction index: "+predictedIndex);
+        Log.i("predict",String.format("predicted label: %s, Confidence: %.2f%%", labelNames.values()[predictedIndex], confidence * 100));
+
+        return labelNames.values()[predictedIndex];
     }
 
     private float[][] flattenCoordinates(List<float[]> handLandmarks, int targetLength) {
