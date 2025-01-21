@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text="רישום"
             android:enabled="false"
-            android:backgroundTint="#00796b"
+            android:backgroundTint="#7A5A3D"
             android:textColor="#fff"
             android:layout_marginTop="16dp" />
 

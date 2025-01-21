@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.recipereach.HomeViewActivity;
 import com.example.recipereach.databinding.FragmentLoginBinding;
 
 import com.example.recipereach.R;
@@ -118,18 +120,36 @@ public class LoginFragment extends Fragment {
             }
         });
 
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadingProgressBar.setVisibility(View.VISIBLE);
+//                loginViewModel.login(usernameEditText.getText().toString(),
+//                        passwordEditText.getText().toString());
+//
+//                // הוספת הניווט לדף הבא צריך לשנות פה את דף היעד
+//                NavController navController = Navigation.findNavController(v);
+//                navController.navigate(R.id.login);
+//            }
+//        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+                // ביצוע פעולה לוגית של login
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
 
-                // הוספת הניווט לדף הבא צריך לשנות פה את דף היעד
-                NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.login);
+                // מעבר ל-Activity החדש
+                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
+                startActivity(intent);
+
+                // הסתרת ה-Progress Bar אם צריך
+                loadingProgressBar.setVisibility(View.GONE);
             }
         });
+
         SigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

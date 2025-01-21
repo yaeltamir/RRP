@@ -36,5 +36,5 @@
         android:src="@drawable/ic_add"
         android:contentDescription="Add Recipe"
         android:tint="@color/white"
-        android:backgroundTint="@color/purple_500" />
+        android:backgroundTint="#7A5A3D" />
 </RelativeLayout>

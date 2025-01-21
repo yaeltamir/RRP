@@ -35,7 +35,8 @@
             android:layout_marginRight="3dp"
             android:text="התחל"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#7A5A3D"/>
 
         <!-- כפתור 2 -->
         <Button
@@ -45,7 +46,8 @@
             android:layout_marginRight="2dp"
             android:text="הפסק"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#7A5A3D"/>
     </LinearLayout>
 
     <!-- תיבת טקסט ארוכה עם אפשרות לגלול -->
