@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "240472419717",
+    "project_id": "recipereach-73583",
+    "storage_bucket": "recipereach-73583.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240472419717:android:05550359ea3a1a24c128ec",
+        "android_client_info": {
+          "package_name": "com.example.recipereach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240472419717-drhdsp4cocabg42njlbtivtv0ipnlmbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recipereach",
+            "certificate_hash": "d616d621bfe5cab8a095663b7a18c3ad1a0a63be"
+          }
+        },
+        {
+          "client_id": "240472419717-h6jhjmm1ld96int5g39s2f7bsohcukna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXMu705pIYv3MRwueYKYgz5QhfFnxwHYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240472419717-h6jhjmm1ld96int5g39s2f7bsohcukna.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,64 +1,115 @@
 package com.example.recipereach;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SigninFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SigninFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth auth;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private EditText emailEditText, passwordEditText, usernameEditText;
+    private Button signInButton;
+    private ProgressBar progressBar;
 
-    public SigninFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SigninFragment newInstance(String param1, String param2) {
-        SigninFragment fragment = new SigninFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public SigninFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_blank, container, false);
+
+        emailEditText = view.findViewById(R.id.email);
+        passwordEditText = view.findViewById(R.id.password);
+        usernameEditText = view.findViewById(R.id.username);
+        signInButton = view.findViewById(R.id.registerButton);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validateFields();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        emailEditText.addTextChangedListener(textWatcher);
+        passwordEditText.addTextChangedListener(textWatcher);
+        usernameEditText.addTextChangedListener(textWatcher);
+
+        signInButton.setOnClickListener(v -> signInUser(view));
+
+        return view;
+    }
+
+    private void validateFields() {
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        String username = usernameEditText.getText().toString().trim();
+
+        boolean isEmailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        boolean isPasswordValid = password.length() >= 6;
+        boolean isUsernameValid = !TextUtils.isEmpty(username);
+
+        if (!isEmailValid) {
+            emailEditText.setError("מייל לא תקין");
+        }
+
+        if (!isPasswordValid) {
+            passwordEditText.setError("סיסמא חייבת להיות לפחות 6 תווים");
+        }
+
+        if (!isUsernameValid) {
+            usernameEditText.setError("שם משתמש לא יכול להיות ריק");
+        }
+
+        signInButton.setEnabled(isEmailValid && isPasswordValid && isUsernameValid);
+    }
+
+    private void signInUser(View view) {
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        String username = usernameEditText.getText().toString().trim();
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);
+
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getActivity(), "נרשמת בהצלחה!", Toast.LENGTH_SHORT).show();
+                        NavController navController = Navigation.findNavController(view);
+                        navController.navigate(R.id.action_SignInFragment_to_LoginFragment);
+                    } else {
+                        Toast.makeText(getActivity(), "הרישום נכשל: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

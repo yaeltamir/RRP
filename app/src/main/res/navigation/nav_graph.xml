@@ -22,8 +22,11 @@
         android:id="@+id/SignInFragment"
         android:name="com.example.recipereach.SigninFragment"
         android:label="Sign In"
-        tools:layout="@layout/fragment_blank" />
-
+        tools:layout="@layout/fragment_blank" >
+    <action
+        android:id="@+id/action_SignInFragment_to_LoginFragment"
+        app:destination="@id/LoginFragment" />
+    </fragment>
 
 
 </navigation>

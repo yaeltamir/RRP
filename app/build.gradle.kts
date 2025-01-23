@@ -2,9 +2,11 @@ import org.gradle.api.JavaVersion
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+   // alias(libs.plugins.jetbrains.kotlin.android)
     id("com.chaquo.python")
-
+        // id  ("org.jetbrains.kotlin.android' version '1.9.10" ) apply false
+  //  id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 
@@ -47,9 +49,9 @@ android {
         viewBinding = true
         compose = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -108,8 +110,6 @@ dependencies {
     //TensorFlow Lite
         // implementation("org.tensorflow:tensorflow-lite:2.12.0")
 
-
-
     // CameraX
     implementation("androidx.camera:camera-core:1.4.0")
     implementation("androidx.camera:camera-camera2:1.4.0")
@@ -117,6 +117,10 @@ dependencies {
     implementation("androidx.camera:camera-view:1.4.0")
 
     //implementation(project(":opencv"))
+
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 
 
 }
