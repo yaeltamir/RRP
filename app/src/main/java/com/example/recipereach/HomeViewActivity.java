@@ -68,6 +68,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,11 +90,13 @@ public class HomeViewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecipeAdapter recipeAdapter;
     private List<Recipe> recipeList = new ArrayList<>();
+    private List<Recipe> originalRecipeList;
     private TextView welcomeText;
     private FloatingActionButton addRecipeButton;
     private EditText searchEditText;
     private TextView noResultsTextView;
-    private boolean isSorted = false;
+    private ImageButton sortButton;
+    private boolean isSortedAscending = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +110,7 @@ public class HomeViewActivity extends AppCompatActivity {
         addRecipeButton=findViewById(R.id.addRecipeButton);
         searchEditText = findViewById(R.id.searchEditText);
         noResultsTextView = findViewById(R.id.noResultsTextView);
+        sortButton = findViewById(R.id.sortButton);
 
 
         String welcome=welcomeText.getText()+username+"!";
@@ -124,6 +128,8 @@ public class HomeViewActivity extends AppCompatActivity {
         recipeList.add(new Recipe("jjjjjjj","a1,a2,a3","put a1 and a2 and a3",null,username));
         recipeList.add(new Recipe("חביתה עם הרבה מאוד תוספות  חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות","a1,a2,a3","put a1 and a2 and a3",null,username));
         recipeList.add(new Recipe("סלט קיסר","a1,a2,a3","put a1 and a2 and a3",null,username));
+
+        originalRecipeList=new ArrayList<>(recipeList);
 
         recipeAdapter = new RecipeAdapter(recipeList, recipeName -> {
             Intent intent = new Intent(HomeViewActivity.this, CameraTempActivity.class);
@@ -153,6 +159,14 @@ public class HomeViewActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {}
+        });
+
+        // מאזין לכפתור המיון
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortList();
+            }
         });
 //
 //        recyclerView = findViewById(R.id.recyclerView);
@@ -185,6 +199,26 @@ public class HomeViewActivity extends AppCompatActivity {
             noResultsTextView.setVisibility(View.GONE);
             recipeAdapter.updateList(filteredList);
         }
+    }
+    private void sortList() {
+        if (isSortedAscending) {
+            // החזרת הרשימה לסדר המקורי
+            recipeList.clear();
+            recipeList.addAll(originalRecipeList);
+//            sortButton.setContentDescription("מיין בסדר עולה");
+        } else {
+            // מיון לפי סדר אלפביתי עולה
+            Collections.sort(recipeList, new Comparator<Recipe>() {
+                @Override
+                public int compare(Recipe o1, Recipe o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+            sortButton.setContentDescription("החזר לסדר המקורי");
+        }
+
+        isSortedAscending = !isSortedAscending;
+        recipeAdapter.updateList(recipeList);
     }
 
 

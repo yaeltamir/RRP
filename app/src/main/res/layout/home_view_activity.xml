@@ -30,6 +30,7 @@
         android:hint="חפש מתכון..."
         android:inputType="text"
         android:padding="12dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toStartOf="@id/sortButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcomeTextView" />
