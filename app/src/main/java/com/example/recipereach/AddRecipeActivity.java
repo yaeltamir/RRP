@@ -59,7 +59,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeNameField, ingredientsField, instructionsField, notesField;
@@ -123,12 +127,52 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // Clear fields and show success message
         clearFields();
-        Toast.makeText(this, "המתכון נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "המתכון נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
 
     }
 
     private boolean addReceipe(String recipeName, String ingredients, String instructions, String notes){
         //need to save in data base ---------------------------------------------------------------
+//
+//
+//// Add a new document with a generated ID
+//        db.collection("users")
+//                .add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//                    }
+//                });
+      //  public void saveRecipe(String userId, String recipeName, String ingredients, String instructions, String notes) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // יצירת מפת נתונים למתכון
+        Map<String, Object> recipeData = new HashMap<>();
+        recipeData.put("userId", username);
+        recipeData.put("recipeName", recipeName);
+        recipeData.put("ingredients", ingredients);
+        recipeData.put("instructions", instructions);
+        recipeData.put("notes", notes); // יכול להיות null
+
+            // שמירת המידע ב-Firestore תחת אוסף "Recipes"
+            db.collection("Recipes")
+                    .add(recipeData)
+                    .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(getApplicationContext(), "מתכון נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getApplicationContext(), "שמירת מתכון נכשלה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("addRecipe",e.getMessage());
+                    });
+
+
 
         // maybe unnecessary because we have data set logic, but still need to handle errors ------
 
