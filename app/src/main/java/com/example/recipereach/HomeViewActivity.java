@@ -62,8 +62,12 @@ package com.example.recipereach;
 //}
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +90,9 @@ public class HomeViewActivity extends AppCompatActivity {
     private RecipeAdapter recipeAdapter;
     private List<Recipe> recipeList = new ArrayList<>();
     private TextView welcomeText;
+    private FloatingActionButton addRecipeButton;
+    private EditText searchEditText;
+    private TextView noResultsTextView;
     private boolean isSorted = false;
 
     @Override
@@ -97,6 +104,10 @@ public class HomeViewActivity extends AppCompatActivity {
         //initialize page components
         welcomeText=findViewById(R.id.welcomeTextView);
         recyclerView = findViewById(R.id.recipesRecyclerView);
+        addRecipeButton=findViewById(R.id.addRecipeButton);
+        searchEditText = findViewById(R.id.searchEditText);
+        noResultsTextView = findViewById(R.id.noResultsTextView);
+
 
         String welcome=welcomeText.getText()+username+"!";
         welcomeText.setText(welcome);
@@ -105,14 +116,14 @@ public class HomeViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // שני פריטים בכל שורה
 
         recipeList = new ArrayList<>();
-        recipeList.add(new Recipe("a","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("חביתה","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("פיצה","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("סלט","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("abcdefghi","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("jjjjjjj","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("חביתה עם הרבה מאוד תוספות  חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות","a1,a2,a3","put a1 and a2 and a3",null));
-        recipeList.add(new Recipe("סלט קיסר","a1,a2,a3","put a1 and a2 and a3",null));
+        recipeList.add(new Recipe("a","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("חביתה","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("פיצה","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("סלט","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("abcdefghi","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("jjjjjjj","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("חביתה עם הרבה מאוד תוספות  חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות","a1,a2,a3","put a1 and a2 and a3",null,username));
+        recipeList.add(new Recipe("סלט קיסר","a1,a2,a3","put a1 and a2 and a3",null,username));
 
         recipeAdapter = new RecipeAdapter(recipeList, recipeName -> {
             Intent intent = new Intent(HomeViewActivity.this, CameraTempActivity.class);
@@ -120,6 +131,29 @@ public class HomeViewActivity extends AppCompatActivity {
             startActivity(intent);
         });
         recyclerView.setAdapter(recipeAdapter);
+
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeViewActivity.this, AddRecipeActivity.class);
+                intent.putExtra("USERNAME", username);
+                startActivity(intent);
+            }
+        });
+
+        // האזנה לשינויים בטקסט
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterList(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 //
 //        recyclerView = findViewById(R.id.recyclerView);
 //        FloatingActionButton btnAddRecipe = findViewById(R.id.btnAddRecipe);
@@ -133,6 +167,26 @@ public class HomeViewActivity extends AppCompatActivity {
 //            // TODO: Add logic to navigate to the Add Recipe screen
 //        });
     }
+
+    private void filterList(String query) {
+        List<Recipe> filteredList = new ArrayList<>();
+        for (Recipe item : recipeList) {
+            if (item.getName().startsWith(query)) {
+                filteredList.add(item);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            noResultsTextView.setVisibility(View.VISIBLE);
+            noResultsTextView.setText("לא נמצאו תוצאות");
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noResultsTextView.setVisibility(View.GONE);
+            recipeAdapter.updateList(filteredList);
+        }
+    }
+
 
 
 }

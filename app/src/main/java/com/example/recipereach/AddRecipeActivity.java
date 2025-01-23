@@ -63,6 +63,7 @@ import java.util.ArrayList;
 
 public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeNameField, ingredientsField, instructionsField, notesField;
+    private String username;
 
     //-----------------------need to replace this with actual dataset -----------------------------
     private ArrayList<Recipe> recipeList = new ArrayList<>();
@@ -72,6 +73,9 @@ public class AddRecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
+
+        username= getIntent().getStringExtra("USERNAME");
+        Log.i("username",username==null?"no name":username);
 
         // Initialize UI elements
         recipeNameField = findViewById(R.id.recipe_name_field);
@@ -140,7 +144,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         //need database ---------------------------------------------------------------------------
         // need access the user identifier in order to save in receipe.userId
         // Add new recipe
-        Recipe newRecipe = new Recipe(recipeName, ingredients, instructions, notes);
+        Recipe newRecipe = new Recipe(recipeName, ingredients, instructions, notes,username);
         recipeList.add(newRecipe);
         for (Recipe recipe:recipeList){
             Log.i("addReceipe","receipe in list: "+recipe);

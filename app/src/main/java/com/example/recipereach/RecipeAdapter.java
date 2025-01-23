@@ -147,7 +147,7 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private final List<Recipe> recipes;
+    private List<Recipe> recipes;
     private final OnRecipeClickListener listener;
 
     public interface OnRecipeClickListener {
@@ -187,5 +187,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             recipeName = itemView.findViewById(R.id.recipeName);
         }
     }
+
+    public void updateList(List<Recipe> newList) {
+        recipes = newList;
+        notifyDataSetChanged();
+    }
+
 }
 

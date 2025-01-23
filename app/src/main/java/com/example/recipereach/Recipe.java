@@ -7,9 +7,8 @@ public class Recipe {
     private String instructions;
     private String notes;
 
-    public Recipe(String name, String ingredients, String instructions, String notes){
-                                                                                //,String userId) {
-        this.userId="need to update this field";
+    public Recipe(String name, String ingredients, String instructions, String notes,String userId) {
+        this.userId=userId;
         this.name = name;
         this.ingredients = ingredients;
         this.instructions = instructions;
