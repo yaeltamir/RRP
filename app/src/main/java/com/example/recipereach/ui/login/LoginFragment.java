@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.example.recipereach.HomeViewActivity;
 import com.example.recipereach.databinding.FragmentLoginBinding;
 
 import com.example.recipereach.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
@@ -120,35 +122,65 @@ public class LoginFragment extends Fragment {
             }
         });
 
+
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                loadingProgressBar.setVisibility(View.VISIBLE);
+//                // ביצוע פעולה לוגית של login
 //                loginViewModel.login(usernameEditText.getText().toString(),
 //                        passwordEditText.getText().toString());
 //
-//                // הוספת הניווט לדף הבא צריך לשנות פה את דף היעד
-//                NavController navController = Navigation.findNavController(v);
-//                navController.navigate(R.id.login);
+//                // מעבר ל-Activity החדש
+//                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
+//                startActivity(intent);
+//
+//                // הסתרת ה-Progress Bar אם צריך
+//                loadingProgressBar.setVisibility(View.GONE);
 //            }
 //        });
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // הצגת ה-ProgressBar
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                // ביצוע פעולה לוגית של login
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
 
-                // מעבר ל-Activity החדש
-                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
-                startActivity(intent);
+                String email = usernameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
 
-                // הסתרת ה-Progress Bar אם צריך
-                loadingProgressBar.setVisibility(View.GONE);
+                // אימות קלט
+                if (TextUtils.isEmpty(email)) {
+                    usernameEditText.setError("יש להזין כתובת אימייל");
+                    loadingProgressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    passwordEditText.setError("יש להזין סיסמה");
+                    loadingProgressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                // ניסיון התחברות ל-Firebase Authentication
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            // הסתרת ה-ProgressBar
+                            loadingProgressBar.setVisibility(View.GONE);
+
+                            if (task.isSuccessful()) {
+                                // התחברות הצליחה, מעבר למסך הראשי
+                                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
+                                startActivity(intent);
+                                requireActivity().finish(); // סוגרים את המסך הנוכחי
+                            } else {
+                                // הצגת הודעת שגיאה
+                                Toast.makeText(requireContext(), "ההתחברות נכשלה: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
+
 
         SigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
