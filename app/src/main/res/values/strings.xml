@@ -35,5 +35,10 @@
              כאן תוכל להוסיף תוכן נוסף, טקסטים או מידע שתרצה שיוצגו על המסך.
              כאן תוכל להוסיף תוכן נוסף, טקסטים או מידע שתרצה שיוצגו על המסך.אן תוכל להוסיף תוכן נוסף, טקסטים או מידע שתרצה שיוצגו על המסך.
              ניתן לגלול מטה ומעלה כדי לראות את כל התוכן."</string>
-    <string name="safe">שמור</string>
+    <string name="save" translatable="false">שמור</string>
+    <string name="welcome_message" translatable="false">ברוך הבא</string>
+    <string name="search_hint" translatable="false">חפש מתכון...</string>
+    <string name="sort" translatable="false">מיין</string>
+    <string name="default_recipe_name" translatable="false">שם מתכון</string>
+
 </resources>

@@ -30,5 +30,21 @@ public class Recipe {
                 ", notes='" + notes + '\'' +
                 '}';
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
 }
 

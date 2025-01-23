@@ -1,40 +1,97 @@
-
-<RelativeLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".HomeViewActivity">
 
-    <!-- כותרת עם שם המשתמש -->
+    <!-- כותרת "ברוך הבא" -->
     <TextView
-        android:id="@+id/userNameTextView"
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="Hello, [User]"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp" />
+        android:text="ברוך הבא "
+        android:textSize="24sp"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"/>
 
-    <!-- רשימת מתכונים -->
+    <!-- שדה חיפוש -->
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="חפש מתכון..."
+        android:inputType="text"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sortButton"
+        android:background="@drawable/search_edittext_background" />
+
+    <!-- כפתור מיון -->
+    <ImageButton
+        android:id="@+id/sortButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="מיין בסדר עולה"
+        android:src="@drawable/ic_sort"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toTopOf="@id/searchEditText"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- כותרת "אוסף המתכונים שלך" -->
+
+    <!-- רשימת המתכונים -->
+    <TextView
+        android:id="@+id/recipesTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="אוסף המתכונים שלך"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchEditText" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recipeRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/userNameTextView"
-        android:layout_marginBottom="80dp" />
+        android:id="@+id/recipesRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@id/recipesTitleTextView"
+        app:layout_constraintBottom_toTopOf="@id/addRecipeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- כפתור עיגול להוספת מתכון -->
+    <!-- כפתור הוספת מתכון -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addRecipeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
+        android:layout_margin="0dp"
+        android:contentDescription="הוספה"
         android:src="@drawable/ic_add"
-        android:contentDescription="Add Recipe"
-        android:tint="@color/white"
-        android:backgroundTint="#7A5A3D" />
-</RelativeLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- כפתור מחיקת מתכונים -->
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="מחק"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

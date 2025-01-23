@@ -85,6 +85,9 @@ public class CameraTempActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         receipe = findViewById(R.id.receipeText);
 
+        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+        Log.i("fullRecipe",recipeName==null?"no name":recipeName);
+
 
         try {
             gesturePredictor = new GesturePredictor(getApplicationContext(), "gesture_model.tflite");
@@ -286,16 +289,16 @@ public class CameraTempActivity extends AppCompatActivity {
                 }
             }
         });
-        Log.i("predict", "before scheduling delay");
-        // הוספת השהייה של שנייה אחת לפני המשך הפעולה
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // המשך הפעולה אחרי ההשהייה
-                Log.i("predict", "Action continued after 1 second delay");
-            }
-        }, 1000); // 1000 מילישניות = שנייה אחת
-        Log.i("predict", "After scheduling delay");
+//        Log.i("predict", "before scheduling delay");
+//        // הוספת השהייה של שנייה אחת לפני המשך הפעולה
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // המשך הפעולה אחרי ההשהייה
+//                Log.i("predict", "Action continued after 1 second delay");
+//            }
+//        }, 1000); // 1000 מילישניות = שנייה אחת
+//        Log.i("predict", "After scheduling delay");
 
 
 
