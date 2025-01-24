@@ -257,7 +257,7 @@ public class CameraTempActivity extends AppCompatActivity {
                 float textSizeToSp = -1;
                 switch (prediction) {
                     case PALM:
-                        if (receipe.getTextSize() < 200) {
+                        if (receipe.getTextSize() < 150) {
                             //receipe.setTextSize(textSize+1);
                             float currentSize = receipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
                             receipe.setTextSize(currentSize + 1);

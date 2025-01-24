@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- permissions to use only the front camera -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,6 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipereach"
         tools:targetApi="31">
+
         <activity
             android:name=".ActionsTempActivity"
             android:exported="false" >

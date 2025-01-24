@@ -65,6 +65,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,6 +80,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,7 +105,11 @@ public class HomeViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_view_activity);
+
+        recipeList= new ArrayList<>();
         String username= getIntent().getStringExtra("USERNAME");
+        setRecipeList(username);
+
 
         //initialize page components
         welcomeText=findViewById(R.id.welcomeTextView);
@@ -119,17 +126,20 @@ public class HomeViewActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // שני פריטים בכל שורה
 
-        recipeList = new ArrayList<>();
-        recipeList.add(new Recipe("a","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("חביתה","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("פיצה","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("סלט","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("abcdefghi","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("jjjjjjj","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("חביתה עם הרבה מאוד תוספות  חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות","a1,a2,a3","put a1 and a2 and a3",null,username));
-        recipeList.add(new Recipe("סלט קיסר","a1,a2,a3","put a1 and a2 and a3",null,username));
+ //       recipeList = new ArrayList<>();
+//        recipeList.add(new Recipe("a","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("חביתה","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("פיצה","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("סלט","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("abcdefghi","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("jjjjjjj","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("חביתה עם הרבה מאוד תוספות  חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות חביתה עם הרבה מאוד תוספות","a1,a2,a3","put a1 and a2 and a3",null,username));
+//        recipeList.add(new Recipe("סלט קיסר","a1,a2,a3","put a1 and a2 and a3",null,username));
 
-        originalRecipeList=new ArrayList<>(recipeList);
+
+        Log.i("home","list: "+recipeList.toString());
+        //  originalRecipeList=new ArrayList<>(recipeList);
+        // Log.i("home","original list: "+originalRecipeList.toString());
 
         recipeAdapter = new RecipeAdapter(recipeList, recipeName -> {
             Intent intent = new Intent(HomeViewActivity.this, CameraTempActivity.class);
@@ -182,6 +192,36 @@ public class HomeViewActivity extends AppCompatActivity {
 //        });
     }
 
+    private void setRecipeList(String username) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Recipes")
+                .whereEqualTo("userId", username)  // התנאי לשליפה
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        recipeList.clear(); // מנקים את הרשימה הקיימת
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("recipeName");
+                            String ingredients = document.getString("ingredients");
+                            String instructions = document.getString("instructions");
+                            String notes = document.getString("notes");
+                            Recipe recipe = new Recipe(name, ingredients, instructions, notes, username); // המרת המסמך לאובייקט
+                            recipeList.add(recipe);
+                        }
+
+                        // מעדכנים את הרשימה המקורית אחרי טעינת הנתונים
+                        originalRecipeList = new ArrayList<>(recipeList);
+
+                        // מעדכנים את ה-RecyclerView
+                        recipeAdapter.updateList(recipeList);
+                    } else {
+                        Log.e("Firestore", "Error getting documents: ", task.getException());
+                    }
+                });
+
+
+    }
+
     private void filterList(String query) {
         List<Recipe> filteredList = new ArrayList<>();
         for (Recipe item : recipeList) {
@@ -220,6 +260,15 @@ public class HomeViewActivity extends AppCompatActivity {
         isSortedAscending = !isSortedAscending;
         recipeAdapter.updateList(recipeList);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String username = getIntent().getStringExtra("USERNAME");
+        if (username != null) {
+            setRecipeList(username); // קריאה לטעינת הנתונים
+        }
+    }
+
 
 
 
