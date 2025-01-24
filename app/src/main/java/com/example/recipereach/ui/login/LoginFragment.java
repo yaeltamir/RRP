@@ -30,6 +30,7 @@ import com.example.recipereach.databinding.FragmentLoginBinding;
 
 import com.example.recipereach.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
@@ -169,10 +170,14 @@ public class LoginFragment extends Fragment {
                             loadingProgressBar.setVisibility(View.GONE);
 
                             if (task.isSuccessful()) {
-                                // התחברות הצליחה, מעבר למסך הראשי
-                                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
-                                startActivity(intent);
-                                requireActivity().finish(); // סוגרים את המסך הנוכחי
+                                FirebaseUser user = auth.getCurrentUser();
+                                if (user != null) {
+                                    // התחברות הצליחה, מעבר למסך הראשי
+                                    Intent intent = new Intent(requireContext(), HomeViewActivity.class);
+                                    intent.putExtra("USERNAME", user.getUid());
+                                    startActivity(intent);
+                                    requireActivity().finish(); // סוגרים את המסך הנוכחי
+                                }
                             } else {
                                 // הצגת הודעת שגיאה
                                 Toast.makeText(requireContext(), "ההתחברות נכשלה: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

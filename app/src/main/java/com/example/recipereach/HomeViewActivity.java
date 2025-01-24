@@ -102,7 +102,7 @@ public class HomeViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_view_activity);
-        String username="need to get it from the previous page";
+        String username= getIntent().getStringExtra("USERNAME");
 
         //initialize page components
         welcomeText=findViewById(R.id.welcomeTextView);
