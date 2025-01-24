@@ -79,6 +79,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recipereach.activities.GuideActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -190,6 +191,17 @@ public class HomeViewActivity extends AppCompatActivity {
 //        btnAddRecipe.setOnClickListener(v -> {
 //            // TODO: Add logic to navigate to the Add Recipe screen
 //        });
+        //trying
+        Button btnOpenGuide = findViewById(R.id.guideButton);
+
+        btnOpenGuide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeViewActivity.this, GuideActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void setRecipeList(String username) {
@@ -218,8 +230,6 @@ public class HomeViewActivity extends AppCompatActivity {
                         Log.e("Firestore", "Error getting documents: ", task.getException());
                     }
                 });
-
-
     }
 
     private void filterList(String query) {
@@ -268,8 +278,5 @@ public class HomeViewActivity extends AppCompatActivity {
             setRecipeList(username); // קריאה לטעינת הנתונים
         }
     }
-
-
-
 
 }
