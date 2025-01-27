@@ -21,7 +21,7 @@
         android:layout_width="423dp"
         android:layout_height="416dp"
         android:contentDescription="@string/logo_description"
-        android:src="@drawable/rrlogo"
+        android:src="@drawable/rr_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

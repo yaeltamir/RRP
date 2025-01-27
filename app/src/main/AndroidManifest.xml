@@ -19,9 +19,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/rrlogo"
+        android:icon="@drawable/rr_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/rrlogo"
+        android:roundIcon="@drawable/rr_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipereach"
         tools:targetApi="31">
