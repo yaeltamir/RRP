@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SigninFragment"
-    android:background="#f5f5f5"
-    android:padding="16dp">
+    android:background="#ffffff"
+    android:padding="16dp"
+    android:layoutDirection="rtl"
+    android:gravity="end">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,26 +16,20 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!-- כותרת -->
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="רישום"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#333"
-            android:layout_marginBottom="24dp" />
 
-        <!-- שם מלא -->
+        <!-- סיסמא -->
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="סיסמא"
+            android:hint="@string/prompt_password"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         <!-- שם משתמש -->
         <EditText
@@ -43,18 +39,22 @@
             android:hint="שם משתמש"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
-            android:padding="10dp" />
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- אימייל -->
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="מייל"
+            android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
-            android:padding="10dp" />
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- כפתור הרשמה -->
         <Button
@@ -63,9 +63,11 @@
             android:layout_height="wrap_content"
             android:text="הרשם"
             android:enabled="false"
-            android:backgroundTint="#7A5A3D"
-            android:textColor="#fff"
-            android:layout_marginTop="16dp" />
+            android:backgroundTint="@color/buttonBackground"
+            android:textColor="@color/buttonTextColor"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -73,6 +75,18 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_gravity="center" />
+
+        <!-- לוגו -->
+        <ImageView
+            android:id="@+id/myImageView"
+            android:layout_width="423dp"
+            android:layout_height="416dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/logo_description"
+            android:src="@drawable/rrlogo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
 </ScrollView>

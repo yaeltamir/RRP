@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">recipereach</string>
     <!-- Strings related to login -->
-    <string name="prompt_email" translatable="false">Email</string>
-    <string name="prompt_password" translatable="false">Password</string>
+    <string name="prompt_email" translatable="false">מייל</string>
+    <string name="prompt_password" translatable="false">סיסמא</string>
     <string name="action_sign_in" translatable="false">Sign in or register</string>
     <string name="action_sign_in_short" translatable="false">Sign in</string>
     <string name="welcome" translatable="false">"Welcome!"</string>
@@ -40,5 +40,6 @@
     <string name="search_hint" translatable="false">חפש מתכון...</string>
     <string name="sort" translatable="false">מיין</string>
     <string name="default_recipe_name" translatable="false">שם מתכון</string>
+    <string name="logo_description">logo</string>
 
 </resources>

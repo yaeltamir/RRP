@@ -1,6 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:gravity="end">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
@@ -18,44 +21,68 @@
         android:layout_gravity="bottom|end" />
 
     <LinearLayout
-        android:id="@+id/button_container"
-        android:layout_width="233dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- כפתור 1 -->
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="3dp"
-            android:text="התחל"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:backgroundTint="#7A5A3D"/>
+        <!-- כפתור דף הבית -->
+        <ImageButton
+            android:id="@+id/home_button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="דף הבית"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_home"
+            app:tint="@color/tmp" />
 
-        <!-- כפתור 2 -->
-        <Button
-            android:id="@+id/endButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:text="הפסק"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:backgroundTint="#7A5A3D"/>
+        <!-- רווח באמצע -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+        <!-- כפתור עריכה -->
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="עריכה"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            android:src="@drawable/edit"
+            app:tint="@color/buttonBackground" />
+
+        <!-- כפתור מחיקת מתכונים -->
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="מחק"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/buttonBackground" />
     </LinearLayout>
 
+
     <!-- תיבת טקסט ארוכה עם אפשרות לגלול -->
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="637dp"
-        android:layout_marginTop="16dp">
+        android:layout_height="600dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
 
         <TextView
             android:id="@+id/receipeText"
@@ -67,16 +94,40 @@
             android:textSize="32px" />
     </ScrollView>
 
-    <!-- כפתור עם אייקון של עריכה -->
-    <Button
-        android:id="@+id/editButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|end"
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:background="@android:drawable/ic_menu_edit"
-        android:contentDescription="עריכה" />
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
 
+        <!-- כפתור 1 -->
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_weight="1"
+            android:backgroundTint="@color/buttonBackground"
+            android:text="התחל"
+            android:textColor="@color/buttonTextColor"
+            android:textSize="@dimen/body_text_size"
+            android:textStyle="bold" />
 
+        <!-- כפתור 2 -->
+        <Button
+            android:id="@+id/endButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_weight="1"
+            android:backgroundTint="@color/tmp"
+            android:text="הפסק"
+            android:textColor="@color/buttonTextColor"
+            android:textSize="@dimen/body_text_size"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </FrameLayout>

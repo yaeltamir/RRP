@@ -1,5 +1,8 @@
 package com.example.recipereach;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -40,6 +43,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -60,13 +64,16 @@ public class CameraTempActivity extends AppCompatActivity {
     private ExecutorService cameraExecutor;
     private HandLandmarker handLandmarker;
     private OverlayView overlayView;
-    private Button startButton, endButton, editButton;
+    private Button startButton, endButton;
     private ScrollView scrollView;
     private TextView receipe;
+    private ImageButton homeButton, editButton, deleteButton;
 
     private boolean initialized = false;
     private ProcessCameraProvider cameraProvider;
     private GesturePredictor gesturePredictor;
+
+    private String username;
 
     private static final int CAMERA_PERMISSION_CODE = 100;
 
@@ -82,11 +89,16 @@ public class CameraTempActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         endButton = findViewById(R.id.endButton);
         editButton = findViewById(R.id.editButton);
+        homeButton = findViewById(R.id.home_button);
+        deleteButton = findViewById(R.id.deleteButton);
         scrollView = findViewById(R.id.scrollView);
         receipe = findViewById(R.id.receipeText);
 
         String recipeName = getIntent().getStringExtra("RECIPE_NAME");
         Log.i("fullRecipe",recipeName==null?"no name":recipeName);
+
+        username= getIntent().getStringExtra("USERNAME");
+        Log.i("username",username==null?"no name":username);
 
 
         try {
@@ -110,12 +122,14 @@ public class CameraTempActivity extends AppCompatActivity {
                 }
             }
         });
+
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopCamera();
             }
         });
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +137,17 @@ public class CameraTempActivity extends AppCompatActivity {
                 receipe.setText("edit...");
             }
         });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CameraTempActivity.this, HomeViewActivity.class);
+                intent.putExtra("USERNAME", username);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

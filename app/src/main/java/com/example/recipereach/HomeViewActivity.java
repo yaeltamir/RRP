@@ -96,10 +96,10 @@ public class HomeViewActivity extends AppCompatActivity {
     private List<Recipe> recipeList = new ArrayList<>();
     private List<Recipe> originalRecipeList;
     private TextView welcomeText;
-    private FloatingActionButton addRecipeButton;
+    //private FloatingActionButton addRecipeButton;
     private EditText searchEditText;
     private TextView noResultsTextView;
-    private ImageButton sortButton;
+    private ImageButton sortButton,addRecipeButton, btnOpenGuide ;
     private boolean isSortedAscending = false;
 
     @Override
@@ -119,6 +119,7 @@ public class HomeViewActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         noResultsTextView = findViewById(R.id.noResultsTextView);
         sortButton = findViewById(R.id.sortButton);
+        btnOpenGuide = findViewById(R.id.guideButton);
 
 
         String welcome=welcomeText.getText()+username+"!";
@@ -145,6 +146,7 @@ public class HomeViewActivity extends AppCompatActivity {
         recipeAdapter = new RecipeAdapter(recipeList, recipeName -> {
             Intent intent = new Intent(HomeViewActivity.this, CameraTempActivity.class);
             intent.putExtra("RECIPE_NAME", recipeName);
+            intent.putExtra("USERNAME", username);
             startActivity(intent);
         });
         recyclerView.setAdapter(recipeAdapter);
@@ -191,13 +193,13 @@ public class HomeViewActivity extends AppCompatActivity {
 //        btnAddRecipe.setOnClickListener(v -> {
 //            // TODO: Add logic to navigate to the Add Recipe screen
 //        });
-        //trying
-        Button btnOpenGuide = findViewById(R.id.guideButton);
+
 
         btnOpenGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeViewActivity.this, GuideActivity.class);
+                intent.putExtra("USERNAME", username);
                 startActivity(intent);
             }
         });

@@ -29,11 +29,11 @@ public class GuidePagerAdapter extends FragmentStateAdapter {
             case 2:
                 return new DislikeFragment();
             case 3:
-                return new OpenPalmFragment();
-            case 4:
                 return new ZoomInFragment();
-            case 5:
+            case 4:
                 return new ZoomOutFragment();
+            case 5:
+                return new OpenPalmFragment();
             default:
                 return new LikeFragment(); // ברירת מחדל
         }

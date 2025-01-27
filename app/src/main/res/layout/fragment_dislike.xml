@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.guideFragments.DislikeFragment">
+    tools:context=".fragments.guideFragments.DislikeFragment"
+    android:background="@color/primaryBackground"
+    android:padding="16dp"
+    android:layoutDirection="rtl"
+    android:gravity="end">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <ImageView
+        android:layout_width="190dp"
+        android:layout_height="180dp"
+        android:background="@drawable/dislike" />
 </FrameLayout>

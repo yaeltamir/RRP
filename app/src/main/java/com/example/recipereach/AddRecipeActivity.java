@@ -50,6 +50,7 @@ package com.example.recipereach;
 //    }
 //}
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,7 +59,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.recipereach.activities.GuideActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -89,7 +93,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_button);
         ImageButton homeButton = findViewById(R.id.home_button);
-        ImageButton backButton = findViewById(R.id.back_button);
+
 
         // Save button functionality
         saveButton.setOnClickListener(view -> saveRecipe());
@@ -101,9 +105,14 @@ public class AddRecipeActivity extends AppCompatActivity {
             // Placeholder for home button functionality: need to redirect to home page
         });
 
-        backButton.setOnClickListener(view -> {
-            Log.i("addReceipe","back button was clicked");
-            // Placeholder for back button functionality:  need to redirect to home page
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddRecipeActivity.this, HomeViewActivity.class);
+                intent.putExtra("USERNAME", username);
+                startActivity(intent);
+            }
         });
     }
 
