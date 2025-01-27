@@ -12,6 +12,12 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -66,7 +72,7 @@ public class CameraTempActivity extends AppCompatActivity {
     private OverlayView overlayView;
     private Button startButton, endButton;
     private ScrollView scrollView;
-    private TextView receipe;
+    private TextView recipe;
     private ImageButton homeButton, editButton, deleteButton;
 
     private boolean initialized = false;
@@ -92,7 +98,9 @@ public class CameraTempActivity extends AppCompatActivity {
         homeButton = findViewById(R.id.home_button);
         deleteButton = findViewById(R.id.deleteButton);
         scrollView = findViewById(R.id.scrollView);
-        receipe = findViewById(R.id.receipeText);
+        recipe = findViewById(R.id.receipeText);
+
+        setFullRecipe();
 
         String recipeName = getIntent().getStringExtra("RECIPE_NAME");
         Log.i("fullRecipe",recipeName==null?"no name":recipeName);
@@ -134,7 +142,7 @@ public class CameraTempActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                receipe.setText("edit...");
+                recipe.setText("edit...");
             }
         });
 
@@ -148,6 +156,61 @@ public class CameraTempActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setFullRecipe() {
+        // קבלת הנתונים שהועברו ב-intent
+        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+        String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
+        String recipeInstructions = getIntent().getStringExtra("RECIPE_INSTRUCTIONS");
+        String recipeNotes = getIntent().getStringExtra("RECIPE_NOTES");
+
+        // יצירת SpannableString למתכון המעוצב
+        SpannableStringBuilder designedRecipe = new SpannableStringBuilder();
+
+        // עיצוב שם המתכון (כותרת ראשית, מודגש, תחתון, בגודל גדול, ומרוכז)
+        SpannableString recipeTitle = new SpannableString(recipeName + "\n\n");
+        recipeTitle.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, recipeName.length(), 0);
+        recipeTitle.setSpan(new UnderlineSpan(), 0, recipeName.length(), 0);
+        recipeTitle.setSpan(new RelativeSizeSpan(1.5f), 0, recipeName.length(), 0);
+        designedRecipe.append(recipeTitle);
+
+        // עיצוב כותרת "מרכיבים:"
+        SpannableString ingredientsTitle = new SpannableString("מרכיבים:\n");
+        ingredientsTitle.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, ingredientsTitle.length(), 0);
+        ingredientsTitle.setSpan(new RelativeSizeSpan(1.2f), 0, ingredientsTitle.length(), 0);
+        designedRecipe.append(ingredientsTitle);
+
+        // הוספת המרכיבים (טקסט רגיל)
+        designedRecipe.append(recipeIngredients + "\n\n");
+
+        // עיצוב כותרת "אופן ההכנה:"
+        SpannableString instructionsTitle = new SpannableString("אופן ההכנה:\n");
+        instructionsTitle.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, instructionsTitle.length(), 0);
+        instructionsTitle.setSpan(new RelativeSizeSpan(1.2f), 0, instructionsTitle.length(), 0);
+        designedRecipe.append(instructionsTitle);
+
+        // הוספת ההוראות (טקסט רגיל)
+        designedRecipe.append(recipeInstructions + "\n\n");
+
+        // הוספת הערות נוספות (אם קיימות)
+        if (recipeNotes != null && !recipeNotes.isEmpty()) {
+            SpannableString notesTitle = new SpannableString("הערות נוספות:\n");
+            notesTitle.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, notesTitle.length(), 0);
+            notesTitle.setSpan(new RelativeSizeSpan(1.2f), 0, notesTitle.length(), 0);
+            designedRecipe.append(notesTitle);
+
+            // הוספת הערות (טקסט רגיל)
+            designedRecipe.append(recipeNotes);
+        }
+
+        // מציאת תיבת הטקסט ועדכון הטקסט המעוצב בה
+
+        recipe.setText(designedRecipe);
+        Log.i("fullRecipe",designedRecipe.toString());
+
+        // אם יש צורך, מרכז את הטקסט כולו
+        // recipe.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
     }
 
     @Override
@@ -268,7 +331,7 @@ public class CameraTempActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                float textSize = receipe.getTextSize();// ערך ב-SP
+                float textSize = recipe.getTextSize();// ערך ב-SP
                 Log.i("predict", "text size  " + textSize);
                 float valueInSp = 18; // ערך ב-SP
                 float valueInPx = TypedValue.applyDimension(
@@ -282,32 +345,32 @@ public class CameraTempActivity extends AppCompatActivity {
                 float textSizeToSp = -1;
                 switch (prediction) {
                     case PALM:
-                        if (receipe.getTextSize() < 150) {
-                            //receipe.setTextSize(textSize+1);
-                            float currentSize = receipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
-                            receipe.setTextSize(currentSize + 1);
-                            // receipe.setTextSize(TypedValue., receipe.getTextSize() + 1);
-                            Log.i("predict", "text size after palm: " + receipe.getTextSize());
+                        if (recipe.getTextSize() < 150) {
+                            //recipe.setTextSize(textSize+1);
+                            float currentSize = recipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
+                            recipe.setTextSize(currentSize + 1);
+                            // recipe.setTextSize(TypedValue., recipe.getTextSize() + 1);
+                            Log.i("predict", "text size after palm: " + recipe.getTextSize());
                         }
                         break;
                     case GRIP:
-                        if (receipe.getTextSize() > 47) { // מגבלת גודל מינימלי
-                            //receipe.setTextSize(TypedValue.COMPLEX_UNIT_SP, receipe.getTextSize() - 2);
-                            //receipe.setTextSize(textSize-1);
-                            float currentSize = receipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
-                            receipe.setTextSize(currentSize - 1);
-                            Log.i("predict", "text size after grip: " + receipe.getTextSize());
+                        if (recipe.getTextSize() > 47) { // מגבלת גודל מינימלי
+                            //recipe.setTextSize(TypedValue.COMPLEX_UNIT_SP, recipe.getTextSize() - 2);
+                            //recipe.setTextSize(textSize-1);
+                            float currentSize = recipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity; // קבלת גודל טקסט ביחידות SP
+                            recipe.setTextSize(currentSize - 1);
+                            Log.i("predict", "text size after grip: " + recipe.getTextSize());
                         }
                         break;
                     case LIKE:
-                        scrollView.smoothScrollBy(0, -receipe.getLineHeight());
+                        scrollView.smoothScrollBy(0, -recipe.getLineHeight());
                         break;
                     case POINT:
                         stopCamera();
 
                         break;
                     case DISLIKE:
-                        scrollView.smoothScrollBy(0, receipe.getLineHeight());
+                        scrollView.smoothScrollBy(0, recipe.getLineHeight());
                         break;
                     default:
                         break;

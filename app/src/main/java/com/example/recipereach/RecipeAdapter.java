@@ -151,7 +151,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private final OnRecipeClickListener listener;
 
     public interface OnRecipeClickListener {
-        void onRecipeClick(String recipeName);
+        void onRecipeClick(Recipe recipeName);
     }
 
     public RecipeAdapter(List<Recipe> recipes, OnRecipeClickListener listener) {
@@ -169,8 +169,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String recipe = recipes.get(position).getName();
-        holder.recipeName.setText(recipe);
+        Recipe recipe = recipes.get(position);
+        holder.recipeName.setText(recipe.getName());
         holder.itemView.setOnClickListener(v -> listener.onRecipeClick(recipe));
     }
 

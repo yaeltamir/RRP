@@ -45,5 +45,10 @@ public class Recipe {
     public String getNotes() {
         return notes;
     }
+
+    public String getFullRecipe(){
+        String notesToAdd=notes!=null?"\n הערות נוספות: \n"+notes:"";
+        return name+'\n'+"מצרכים:\n"+ingredients+"אופן ההכנה: \n"+instructions+notesToAdd;
+    }
 }
 
