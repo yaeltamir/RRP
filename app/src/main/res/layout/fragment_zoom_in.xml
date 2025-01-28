@@ -4,15 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.guideFragments.ZoomInFragment"
-    android:background="@color/primaryBackground"
+    android:background="@color/white"
     android:padding="16dp"
     android:layoutDirection="rtl"
     android:gravity="end">
 
 
+    <ImageButton
+        android:id="@+id/home_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_home"
+        android:contentDescription="דף הבית"
+        android:scaleType="centerInside" />
+
     <ImageView
         android:layout_width="190dp"
         android:layout_height="180dp"
-        android:background="@drawable/palm" />
+        android:background="@drawable/palm"
+        android:layout_gravity="center" />
 
 </FrameLayout>

@@ -37,7 +37,7 @@
             android:contentDescription="דף הבית"
             android:scaleType="centerInside"
             android:src="@drawable/ic_home"
-            app:tint="@color/tmp" />
+            app:tint="@color/buttonColor" />
 
         <!-- רווח באמצע -->
         <View
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_weight="1"
-            android:backgroundTint="@color/tmp"
+            android:backgroundTint="@color/buttonColor"
             android:text="הפסק"
             android:textColor="@color/buttonTextColor"
             android:textSize="@dimen/body_text_size"
