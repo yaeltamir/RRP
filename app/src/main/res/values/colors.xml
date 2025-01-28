@@ -1,72 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#DABFB2</color>
     <color name="purple_500">#6200EE</color>
     <color name="gray">#CCCCCC</color>
     <color name="orange">#FF9800</color>
     <color name="primary_text">#000000</color>
     <color name="secondary_text">#666666</color>
     <color name="card_background">#FFFFFF</color>
-
     <color name="background">#FCEFE8</color>
     <color name="textColor">#bcbab6</color>
-    <!-- colors.xml -->
-    <color name="buttonBackground">#97afaf</color>
-    <color name="buttonColor">#A96B4C</color>
     <color name="buttonTextColor">#FFFFFF</color>
     <color name="errorText">#DC6D31</color>
     <color name="primaryBackground">#D9D9D8</color>
-    <color name="primaryTextColor">#be8169</color>
     <color name="errorColor">#52230A</color>
     <color name="tmp">#be8169</color>
-
-
         <color name="colorWhite">#FFFFFF</color>
         <color name="colorBlack">#000000</color>
         <color name="colorGrayLight">#F5F5F5</color>
         <color name="colorGrayDark">#4B4B4B</color>
-
-
         <color name="colorBeige">#F5F5DC</color>
         <color name="colorTan">#D2B48C</color>
         <color name="colorBrownLight">#A0522D</color>
         <color name="colorBrownDark">#654321</color>
-
-
         <color name="colorPastelPink">#FFC4D6</color>
         <color name="colorPastelGreen">#C8E7D3</color>
         <color name="colorPastelYellow">#FFF1C1</color>
         <color name="colorPastelBlue">#B5EAEA</color>
-
         <color name="colorAccentRed">#E63946</color>
         <color name="colorAccentBlue">#1D3557</color>
         <color name="colorAccentGreen">#2A9D8F</color>
         <color name="colorAccentYellow">#F4A261</color>
-
     <!-- צבעים עיקריים -->
     <color name="primary_green">#A8D5BA</color> <!-- ירוק מנטה -->
     <color name="primary_orange">#F9A825</color> <!-- כתום עדין -->
     <color name="primary_cream">#FFF5E1</color> <!-- קרם -->
     <color name="primary_white">#FFFFFF</color> <!-- לבן -->
-
     <!-- צבעים משניים -->
     <color name="accent_yellow">#FFD54F</color> <!-- צהוב עדין -->
     <color name="accent_pink">#F8BBD0</color> <!-- ורוד פסטל -->
     <color name="accent_blue">#B3E5FC</color> <!-- כחול בהיר -->
-
     <!-- צבעים טקסטואליים -->
     <color name="text_primary">#333333</color> <!-- טקסט כהה -->
     <color name="text_secondary">#757575</color> <!-- טקסט משני -->
-
-    <!-- <color name="primaryBackground">#FFFFFF</color> - רקע לבן -->
-    <!--<color name="primaryTextColor">#333333</color> - טקסט כהה-->
     <color name="secondaryTextColor">#999999</color> <!-- טקסט חלש -->
     <color name="primaryIconColor">#6200EE</color> <!-- צבע האייקון -->
-    <!--<color name="buttonBackground">#03DAC5</color>  רקע כפתור -->
 
 
 
-
+    <color name="buttonColor">#946306</color>
+    <color name="primaryTextColor">#227c9d</color>
+    <color name="buttonBackground">#97afaf</color>
+    <color name="shaov">#ffcb77</color>
+    <color name="tcelet">#8ca9ad</color>
+    <color name="white">#FFFFFF</color>
+    <color name="afor">#efefef</color>
 
 </resources>
+

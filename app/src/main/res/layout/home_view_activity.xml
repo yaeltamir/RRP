@@ -6,34 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#FFFFFF"
+    android:background="@color/afor"
     android:layoutDirection="rtl"
     android:gravity="end"
     tools:context=".HomeViewActivity">
 
-    <!-- כותרת "ברוך הבא" -->
+    <!-- כותרת "המתכונים שלי" -->
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ברוך הבא"
-        android:textSize="26sp"
-        android:textColor="#333333"
+        android:text="המתכונים שלי"
+        android:textSize="28sp"
+        android:textColor="@color/buttonColor"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- שורת החיפוש והמיון -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/searchContainer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -41,41 +37,44 @@
         <!-- שדה חיפוש -->
         <EditText
             android:id="@+id/searchEditText"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_edittext_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/afor"
             android:hint="חפש מתכון..."
             android:inputType="text"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="56dp"
             android:textSize="16sp"
+            android:textColor="@color/buttonColor"
+            android:textColorHint="@color/tcelet"
             android:elevation="2dp" />
 
         <!-- כפתור מיון -->
         <ImageButton
             android:id="@+id/sortButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
             android:contentDescription="מיין מתכונים"
-            android:src="@drawable/ic_sort"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="8dp"
-            android:elevation="2dp" />
-    </LinearLayout>
+            android:elevation="2dp"
+            android:src="@drawable/ic_sort" />
+    </FrameLayout>
 
-    <!-- כותרת רשימת המתכונים -->
+
+    <!-- כותרת רשימת המתכונים
     <TextView
         android:id="@+id/recipesTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="אוסף המתכונים שלך"
-        android:textColor="#555555"
+        android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/searchContainer"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />-->
 
     <!-- הודעה כאשר אין תוצאות -->
     <TextView
@@ -86,7 +85,7 @@
         android:padding="16dp"
         android:text="לא נמצאו תוצאות"
         android:textSize="18sp"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/tcelet"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/recipesRecyclerView"
         app:layout_constraintBottom_toBottomOf="@+id/recipesRecyclerView"
@@ -94,46 +93,48 @@
         app:layout_constraintEnd_toEndOf="@+id/recipesRecyclerView" />
 
     <!-- רשימת המתכונים -->
+
+    <!-- כפתור הוספת מתכון -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipesRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="375dp"
+        android:layout_height="573dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/afor"
         android:padding="8dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/recipesTitleTextView"
-        app:layout_constraintBottom_toTopOf="@id/actionButtonsContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- כפתורי פעולה -->
-    <LinearLayout
-        android:id="@+id/actionButtonsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <!-- כפתור מדריך -->
-        <ImageButton
-            android:id="@+id/guideButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/help"
-            android:contentDescription="מדריך"
-            android:background="?attr/selectableItemBackgroundBorderless" />
+    <ImageButton
+        android:id="@+id/addRecipeButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="275dp"
+        android:layout_marginBottom="32dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="הוסף מתכון"
+        android:src="@drawable/ic_document"
+        android:translationZ="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- כפתור הוספת מתכון -->
-        <ImageButton
-            android:id="@+id/addRecipeButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/add_circle"
-            android:contentDescription="הוסף מתכון"
-            android:background="?attr/selectableItemBackgroundBorderless" />
-    </LinearLayout>
+
+    <!-- כפתור מדריך
+    <ImageButton
+        android:id="@+id/guideButton"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="מדריך"
+        android:src="@drawable/ic_handbook"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

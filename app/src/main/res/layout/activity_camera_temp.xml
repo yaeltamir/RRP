@@ -45,18 +45,31 @@
             android:layout_height="0dp"
             android:layout_weight="2" />
 
+        <!-- כפתור מדריך -->
+        <ImageButton
+            android:id="@+id/guideButton"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:contentDescription="מדריך"
+            android:src="@drawable/ic_handbook"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <!-- כפתור עריכה -->
         <ImageButton
             android:id="@+id/editButton"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_margin="4dp"
+            android:layout_margin="0dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="עריכה"
             android:foreground="?attr/selectableItemBackground"
             android:scaleType="centerInside"
-            android:src="@drawable/edit"
+            android:src="@drawable/ic_edit"
             app:tint="@color/buttonBackground" />
 
         <!-- כפתור מחיקת מתכונים -->
@@ -64,7 +77,7 @@
             android:id="@+id/deleteButton"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_margin="4dp"
+            android:layout_margin="0dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="מחק"
@@ -91,7 +104,8 @@
             android:lineSpacingExtra="4dp"
             android:padding="16dp"
             android:text="@string/long_text"
-            android:textSize="32px" />
+            android:textSize="32px"
+            android:textColor="@color/primaryTextColor"/>
     </ScrollView>
 
     <LinearLayout

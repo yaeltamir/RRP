@@ -31,6 +31,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
+import com.example.recipereach.activities.GuideActivity;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mediapipe.framework.image.BitmapImageBuilder;
 import com.google.mediapipe.framework.image.MPImage;
@@ -73,7 +74,7 @@ public class CameraTempActivity extends AppCompatActivity {
     private Button startButton, endButton;
     private ScrollView scrollView;
     private TextView recipe;
-    private ImageButton homeButton, editButton, deleteButton;
+    private ImageButton homeButton, editButton, deleteButton, btnOpenGuide;
 
     private boolean initialized = false;
     private ProcessCameraProvider cameraProvider;
@@ -99,6 +100,7 @@ public class CameraTempActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.deleteButton);
         scrollView = findViewById(R.id.scrollView);
         recipe = findViewById(R.id.receipeText);
+        btnOpenGuide = findViewById(R.id.guideButton);
 
         setFullRecipe();
 
@@ -143,6 +145,15 @@ public class CameraTempActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 recipe.setText("edit...");
+            }
+        });
+
+        btnOpenGuide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CameraTempActivity.this, GuideActivity.class);
+                intent.putExtra("USERNAME", username);
+                startActivity(intent);
             }
         });
 

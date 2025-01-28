@@ -40,7 +40,7 @@ public class HomeViewActivity extends AppCompatActivity {
     //private FloatingActionButton addRecipeButton;
     private EditText searchEditText;
     private TextView noResultsTextView;
-    private ImageButton sortButton,addRecipeButton, btnOpenGuide ;
+    private ImageButton sortButton,addRecipeButton; //, btnOpenGuide ;
     private boolean isSortedAscending = false;
     private  String userid;
 
@@ -61,7 +61,7 @@ public class HomeViewActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         noResultsTextView = findViewById(R.id.noResultsTextView);
         sortButton = findViewById(R.id.sortButton);
-        btnOpenGuide = findViewById(R.id.guideButton);
+        //btnOpenGuide = findViewById(R.id.guideButton);
 
         userid=username;
 
@@ -131,14 +131,14 @@ public class HomeViewActivity extends AppCompatActivity {
 //        });
 
 
-        btnOpenGuide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeViewActivity.this, GuideActivity.class);
-                intent.putExtra("USERNAME", username);
-                startActivity(intent);
-            }
-        });
+//        btnOpenGuide.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HomeViewActivity.this, GuideActivity.class);
+//                intent.putExtra("USERNAME", username);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 
