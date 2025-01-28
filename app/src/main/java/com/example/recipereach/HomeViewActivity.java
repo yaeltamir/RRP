@@ -83,6 +83,7 @@ public class HomeViewActivity extends AppCompatActivity {
             intent.putExtra("RECIPE_INSTRUCTIONS", recipe.getInstructions());
             intent.putExtra("RECIPE_NOTES", recipe.getNotes());
             intent.putExtra("USERNAME", username);
+            intent.putExtra("RECIPE_ID", recipe.getId());
             startActivity(intent);
         });
         recyclerView.setAdapter(recipeAdapter);
@@ -152,11 +153,12 @@ public class HomeViewActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         recipeList.clear(); // מנקים את הרשימה הקיימת
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String documentId = document.getId();
                             String name = document.getString("recipeName");
                             String ingredients = document.getString("ingredients");
                             String instructions = document.getString("instructions");
                             String notes = document.getString("notes");
-                            Recipe recipe = new Recipe(name, ingredients, instructions, notes, username); // המרת המסמך לאובייקט
+                            Recipe recipe = new Recipe(name, ingredients, instructions, notes, username,documentId); // המרת המסמך לאובייקט
                             recipeList.add(recipe);
                         }
 

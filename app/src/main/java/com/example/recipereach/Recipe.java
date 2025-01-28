@@ -6,6 +6,7 @@ public class Recipe {
     private String ingredients;
     private String instructions;
     private String notes;
+    private String id;
 
     public Recipe(String name, String ingredients, String instructions, String notes,String userId) {
         this.userId=userId;
@@ -13,6 +14,15 @@ public class Recipe {
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.notes = notes;
+    }
+
+    public Recipe(String name, String ingredients, String instructions, String notes,String userId,String id) {
+        this.userId=userId;
+        this.name = name;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+        this.notes = notes;
+        this.id=id;
     }
 
     public String getName() {
@@ -32,6 +42,9 @@ public class Recipe {
 
     public String getUserId() {
         return userId;
+    }
+    public String getId() {
+        return id;
     }
 
     public String getIngredients() {

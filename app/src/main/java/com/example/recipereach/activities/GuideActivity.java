@@ -26,6 +26,8 @@ public class GuideActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
+
+
         // חיבור TabLayout לנקודות
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         new TabLayoutMediator(tabLayout, viewPager,

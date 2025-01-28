@@ -2,6 +2,7 @@ package com.example.recipereach;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -33,6 +35,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.recipereach.activities.GuideActivity;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.mediapipe.framework.image.BitmapImageBuilder;
 import com.google.mediapipe.framework.image.MPImage;
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
@@ -53,6 +56,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -74,7 +78,7 @@ public class CameraTempActivity extends AppCompatActivity {
     private Button startButton, endButton;
     private ScrollView scrollView;
     private TextView recipe;
-    private ImageButton homeButton, editButton, deleteButton, btnOpenGuide;
+    private ImageButton homeButton, editButton, deleteButton, btnOpenGuide,deleteBtn;
 
     private boolean initialized = false;
     private ProcessCameraProvider cameraProvider;
@@ -97,18 +101,21 @@ public class CameraTempActivity extends AppCompatActivity {
         endButton = findViewById(R.id.endButton);
         editButton = findViewById(R.id.editButton);
         homeButton = findViewById(R.id.home_button);
-        deleteButton = findViewById(R.id.deleteButton);
+       // deleteButton = findViewById(R.id.deleteButton);
         scrollView = findViewById(R.id.scrollView);
         recipe = findViewById(R.id.receipeText);
         btnOpenGuide = findViewById(R.id.guideButton);
+        deleteBtn=findViewById(R.id.deleteButton);
 
         setFullRecipe();
+        String recipeId = getIntent().getStringExtra("RECIPE_ID");
 
         String recipeName = getIntent().getStringExtra("RECIPE_NAME");
         Log.i("fullRecipe",recipeName==null?"no name":recipeName);
 
         username= getIntent().getStringExtra("USERNAME");
         Log.i("username",username==null?"no name":username);
+        Log.i("fullRecipe",recipeId==null?"no ID":recipeId);
 
 
         try {
@@ -130,6 +137,32 @@ public class CameraTempActivity extends AppCompatActivity {
                         setHandLandmarker();
                     startCamera();
                 }
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(CameraTempActivity.this)
+                        .setTitle("אישור מחיקה")
+                        .setMessage("האם אתה בטוח שברצונך למחוק את המתכון?")
+                        .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteRecipe(recipeId);
+                                Toast.makeText(CameraTempActivity.this, "המתכון נמחק בהצלחה!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CameraTempActivity.this, HomeViewActivity.class);
+                                intent.putExtra("USERNAME", username);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -506,6 +539,17 @@ public class CameraTempActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         cameraExecutor.shutdown();
+    }
+
+    public void deleteRecipe(String recipeId){
+        // מחיקת מסמך לפי מזהה (Document ID)
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Recipes")
+                .document(recipeId)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document deleted successfully"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error deleting document", e));
     }
 }
 

@@ -25,4 +25,7 @@
         android:contentDescription="דף הבית"
         android:scaleType="centerInside" />
 
+
+
+
 </FrameLayout>

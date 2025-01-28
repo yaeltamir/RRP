@@ -125,6 +125,13 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
 
+    //gif
+
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.27")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+
 
 
 }
