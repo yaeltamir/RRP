@@ -16,6 +16,6 @@
         android:textSize="18sp"
         android:textStyle="normal"
         android:gravity="center"
-        android:textColor="@color/afor" />
+        android:textColor="@color/tcelet" />
 
 </LinearLayout>
