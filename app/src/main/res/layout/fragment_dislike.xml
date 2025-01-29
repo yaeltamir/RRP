@@ -9,9 +9,43 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
+    <!-- כותרת טקסט שמסבירה את הפעולה -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="תנועת ה- dislike לגלילה כלפיי מטה"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:layout_gravity="top|center_horizontal"
+        android:paddingTop="16dp"
+        android:fontFamily="@font/rubik_medium"/>
+
     <ImageView
         android:layout_width="190dp"
         android:layout_height="180dp"
         android:background="@drawable/dislike"
         android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/arrowImage"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/down"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- טקסט הסבר קצר -->
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="השתמשו בתנועת dislike כדי לגלול את הדף כלפיי מטה"
+        android:textSize="14dp"
+        android:textColor="@color/primaryTextColor"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/rubik_medium"/>
+
 </FrameLayout>

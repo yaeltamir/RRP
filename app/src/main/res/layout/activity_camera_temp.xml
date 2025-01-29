@@ -105,7 +105,8 @@
             android:padding="16dp"
             android:text="@string/long_text"
             android:textSize="32px"
-            android:textColor="@color/primaryTextColor"/>
+            android:textColor="@color/primaryTextColor"
+            android:fontFamily="@font/rubik_medium"/>
     </ScrollView>
 
     <LinearLayout
@@ -128,7 +129,8 @@
             android:text="התחל"
             android:textColor="@color/buttonTextColor"
             android:textSize="@dimen/body_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@font/rubik_medium"/>
 
         <!-- כפתור 2 -->
         <Button
@@ -141,7 +143,8 @@
             android:text="הפסק"
             android:textColor="@color/buttonTextColor"
             android:textSize="@dimen/body_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@font/rubik_medium"/>
     </LinearLayout>
 
 </FrameLayout>

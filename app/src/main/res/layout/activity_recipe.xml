@@ -26,6 +26,7 @@
             android:id="@+id/recipeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik_medium"
             android:text="מצרכים:
     - 2 כוסות קמח
    - 1 כוס סוכר

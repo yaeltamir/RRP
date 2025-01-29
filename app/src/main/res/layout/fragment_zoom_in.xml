@@ -9,11 +9,48 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
+    <!-- כותרת טקסט שמסבירה את הפעולה -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="תנועת ה- palm להגדלה"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:layout_gravity="top|center_horizontal"
+        android:paddingTop="16dp"
+        android:fontFamily="@font/rubik_medium"/>
 
+    <!-- תמונה עם רקע שקוף -->
     <ImageView
+        android:id="@+id/zoomImage"
         android:layout_width="190dp"
         android:layout_height="180dp"
-        android:background="@drawable/palm"
-        android:layout_gravity="center" />
+        android:src="@drawable/grip"
+        android:layout_gravity="center"
+        android:contentDescription="תנועת palm להגדלה"
+        />
+
+
+    <ImageView
+        android:id="@+id/arrowImage"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/zoom_in"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- טקסט הסבר קצר -->
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="השתמשו בתנועת palm כדי להגדיל את הדף"
+        android:textSize="16sp"
+        android:textColor="@color/primaryTextColor"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/rubik_medium"/>
 
 </FrameLayout>

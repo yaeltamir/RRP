@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
+            android:fontFamily="@font/rubik_medium"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
             android:padding="10dp"
@@ -40,6 +41,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
             android:padding="10dp"
+            android:fontFamily="@font/rubik_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -49,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
+            android:fontFamily="@font/rubik_medium"
             android:inputType="textEmailAddress"
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
@@ -66,6 +69,7 @@
             android:backgroundTint="@color/buttonBackground"
             android:textColor="@color/buttonTextColor"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/rubik_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
