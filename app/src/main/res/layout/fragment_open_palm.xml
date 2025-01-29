@@ -33,7 +33,7 @@
         android:id="@+id/arrowImage"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:src="@drawable/zoom_out"
+        android:src="@drawable/tap"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dp"/>
 
