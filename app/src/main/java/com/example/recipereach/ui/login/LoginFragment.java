@@ -87,7 +87,7 @@ public class LoginFragment extends Fragment {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    // updateUiWithUser(loginResult.getSuccess());
                 }
             }
         });

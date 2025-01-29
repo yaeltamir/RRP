@@ -12,10 +12,6 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
-    <!-- לוגו -->
-
-    <!-- שדה שם משתמש -->
-
     <ImageView
         android:id="@+id/myImageView"
         android:layout_width="423dp"
@@ -38,7 +34,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp" />
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/rubik_medium"/>
 
     <!-- שדה סיסמה -->
     <EditText
@@ -55,7 +52,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp" />
+        android:layout_marginEnd="24dp"
+        android:layoutDirection="rtl"
+        android:gravity="end"
+        android:fontFamily="@font/rubik_medium"/>
 
     <!-- כפתור התחברות -->
     <Button
@@ -67,7 +67,8 @@
         app:layout_constraintTop_toBottomOf="@id/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/rubik_medium"/>
 
     <!-- כפתור רישום -->
     <Button
@@ -79,7 +80,8 @@
         app:layout_constraintTop_toBottomOf="@id/login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/rubik_medium"/>
 
     <!-- Progress Bar -->
     <ProgressBar

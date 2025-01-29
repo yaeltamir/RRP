@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="השתמשו בתנועת point כדי לעצור את הזיהוי תנועות ידיים"
-        android:textSize="12dp"
+        android:textSize="13dp"
         android:textColor="@color/primaryTextColor"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
