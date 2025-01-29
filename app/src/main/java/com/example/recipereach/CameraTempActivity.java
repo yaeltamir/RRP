@@ -139,6 +139,8 @@ public class CameraTempActivity extends AppCompatActivity {
                 editButton.setAlpha(0.5f);
                 deleteBtn.setEnabled(false);
                 deleteBtn.setAlpha(0.5f);
+                startButton.setEnabled(false); // גם הכפתור עצמו כדי למנוע לחיצות חוזרות
+                startButton.setAlpha(0.5f);
 
                 //checks camera permissions
                 if (ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -154,18 +156,6 @@ public class CameraTempActivity extends AppCompatActivity {
             }
         });
 
-//        startButton.setOnClickListener(v -> {
-//            homeButton.setEnabled(false);
-//            homeButton.setAlpha(0.5f);
-//            btnOpenGuide.setEnabled(false);
-//            btnOpenGuide.setAlpha(0.5f);
-//            editButton.setEnabled(false);
-//            editButton.setAlpha(0.5f);
-//            deleteBtn.setEnabled(false);
-//            deleteBtn.setAlpha(0.5f);
-//            // startButton.setEnabled(false); // גם הכפתור עצמו כדי למנוע לחיצות חוזרות
-//            startButton.setAlpha(0.5f);
-//        });
 
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,18 +164,6 @@ public class CameraTempActivity extends AppCompatActivity {
             }
         });
 
-//        endButton.setOnClickListener(v -> {
-//            homeButton.setEnabled(true);
-//            homeButton.setAlpha(1f);
-//            btnOpenGuide.setEnabled(true);
-//            btnOpenGuide.setAlpha(1f);
-//            editButton.setEnabled(true);
-//            editButton.setAlpha(1f);
-//            deleteBtn.setEnabled(true);
-//            deleteBtn.setAlpha(1f);
-//            //startButton.setEnabled(true);
-//            startButton.setAlpha(1f);
-//        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +212,13 @@ public class CameraTempActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CameraTempActivity.this, GuideActivity.class);
-                intent.putExtra("USERNAME", username);
+                intent.putExtra("RECIPE_ID", recipeId);
+                intent.putExtra("RECIPE_NAME", recipeName);
+                intent.putExtra("INGREDIENTS", recipeIngredients);
+                intent.putExtra("INSTRUCTIONS", recipeInstructions);
+                intent.putExtra("NOTES", recipeNotes);
+                intent.putExtra("USERNAME",username);
+
                 startActivity(intent);
             }
         });
@@ -384,6 +368,8 @@ public class CameraTempActivity extends AppCompatActivity {
             editButton.setAlpha(1f);
             deleteBtn.setEnabled(true);
             deleteBtn.setAlpha(1f);
+            startButton.setEnabled(true);
+            startButton.setAlpha(1f);
             Log.i("Camera", "Camera stopped");
         }
     }
