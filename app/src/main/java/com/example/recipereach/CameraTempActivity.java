@@ -78,16 +78,11 @@ public class CameraTempActivity extends AppCompatActivity {
     private Button startButton, endButton;
     private ScrollView scrollView;
     private TextView recipe;
-    private ImageButton homeButton, editButton, deleteButton, btnOpenGuide,deleteBtn;
-
+    private ImageButton homeButton, editButton, btnOpenGuide,deleteBtn; //, deleteButton;
     private boolean initialized = false;
     private ProcessCameraProvider cameraProvider;
     private GesturePredictor gesturePredictor;
-
-    private String username;
-
-    private String recipeName,recipeIngredients ,recipeInstructions,recipeNotes;
-
+    private String username,recipeName,recipeIngredients ,recipeInstructions,recipeNotes;
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     @Override
@@ -108,16 +103,16 @@ public class CameraTempActivity extends AppCompatActivity {
         endButton = findViewById(R.id.endButton);
         editButton = findViewById(R.id.editButton);
         homeButton = findViewById(R.id.home_button);
-       // deleteButton = findViewById(R.id.deleteButton);
         scrollView = findViewById(R.id.scrollView);
         recipe = findViewById(R.id.receipeText);
         btnOpenGuide = findViewById(R.id.guideButton);
         deleteBtn=findViewById(R.id.deleteButton);
+        // deleteButton = findViewById(R.id.deleteButton);
 
         setFullRecipe();
         String recipeId = getIntent().getStringExtra("RECIPE_ID");
-//
-//        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+
+//      String recipeName = getIntent().getStringExtra("RECIPE_NAME");
         Log.i("fullRecipe",recipeName==null?"no name":recipeName);
 
         username= getIntent().getStringExtra("USERNAME");
@@ -134,18 +129,64 @@ public class CameraTempActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // משביתים את הכפתורים לפני התחלת הפעולה
+                homeButton.setEnabled(false);
+                homeButton.setAlpha(0.5f);
+                btnOpenGuide.setEnabled(false);
+                btnOpenGuide.setAlpha(0.5f);
+                editButton.setEnabled(false);
+                editButton.setAlpha(0.5f);
+                deleteBtn.setEnabled(false);
+                deleteBtn.setAlpha(0.5f);
+
                 //checks camera permissions
                 if (ContextCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(CameraTempActivity.this,
                             new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                } else {
+                }
+                else {
                     if (!initialized)
                         setHandLandmarker();
                     startCamera();
                 }
             }
         });
+
+//        startButton.setOnClickListener(v -> {
+//            homeButton.setEnabled(false);
+//            homeButton.setAlpha(0.5f);
+//            btnOpenGuide.setEnabled(false);
+//            btnOpenGuide.setAlpha(0.5f);
+//            editButton.setEnabled(false);
+//            editButton.setAlpha(0.5f);
+//            deleteBtn.setEnabled(false);
+//            deleteBtn.setAlpha(0.5f);
+//            // startButton.setEnabled(false); // גם הכפתור עצמו כדי למנוע לחיצות חוזרות
+//            startButton.setAlpha(0.5f);
+//        });
+
+        endButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopCamera();
+            }
+        });
+
+//        endButton.setOnClickListener(v -> {
+//            homeButton.setEnabled(true);
+//            homeButton.setAlpha(1f);
+//            btnOpenGuide.setEnabled(true);
+//            btnOpenGuide.setAlpha(1f);
+//            editButton.setEnabled(true);
+//            editButton.setAlpha(1f);
+//            deleteBtn.setEnabled(true);
+//            deleteBtn.setAlpha(1f);
+//            //startButton.setEnabled(true);
+//            startButton.setAlpha(1f);
+//        });
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,9 +203,6 @@ public class CameraTempActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,14 +230,6 @@ public class CameraTempActivity extends AppCompatActivity {
             }
         });
 
-        endButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopCamera();
-            }
-        });
-
-
         btnOpenGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,8 +247,6 @@ public class CameraTempActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     private void setFullRecipe() {
@@ -348,6 +376,14 @@ public class CameraTempActivity extends AppCompatActivity {
             previewView.setVisibility(View.INVISIBLE);
             editButton.setVisibility(View.VISIBLE);
             overlayView.clear();
+            homeButton.setEnabled(true);
+            homeButton.setAlpha(1f);
+            btnOpenGuide.setEnabled(true);
+            btnOpenGuide.setAlpha(1f);
+            editButton.setEnabled(true);
+            editButton.setAlpha(1f);
+            deleteBtn.setEnabled(true);
+            deleteBtn.setAlpha(1f);
             Log.i("Camera", "Camera stopped");
         }
     }
