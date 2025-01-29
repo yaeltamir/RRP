@@ -86,12 +86,19 @@ public class CameraTempActivity extends AppCompatActivity {
 
     private String username;
 
+    private String recipeName,recipeIngredients ,recipeInstructions,recipeNotes;
+
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_temp);
+
+        recipeName = getIntent().getStringExtra("RECIPE_NAME");
+        recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
+        recipeInstructions = getIntent().getStringExtra("RECIPE_INSTRUCTIONS");
+        recipeNotes = getIntent().getStringExtra("RECIPE_NOTES");
 
         //initialize components of the activity view
         previewView = findViewById(R.id.view_finder);
@@ -109,8 +116,8 @@ public class CameraTempActivity extends AppCompatActivity {
 
         setFullRecipe();
         String recipeId = getIntent().getStringExtra("RECIPE_ID");
-
-        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+//
+//        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
         Log.i("fullRecipe",recipeName==null?"no name":recipeName);
 
         username= getIntent().getStringExtra("USERNAME");
@@ -139,6 +146,25 @@ public class CameraTempActivity extends AppCompatActivity {
                 }
             }
         });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CameraTempActivity.this, EditRecipeActivity.class);
+
+                // שלח את פרטי המתכון ל-Activity החדש
+                intent.putExtra("RECIPE_ID", recipeId);
+                intent.putExtra("RECIPE_NAME", recipeName);
+                intent.putExtra("INGREDIENTS", recipeIngredients);
+                intent.putExtra("INSTRUCTIONS", recipeInstructions);
+                intent.putExtra("NOTES", recipeNotes);
+                intent.putExtra("USERNAME",username);
+
+                startActivity(intent);
+            }
+        });
+
+
+
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,13 +199,6 @@ public class CameraTempActivity extends AppCompatActivity {
             }
         });
 
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                recipe.setText("edit...");
-            }
-        });
 
         btnOpenGuide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,10 +223,10 @@ public class CameraTempActivity extends AppCompatActivity {
 
     private void setFullRecipe() {
         // קבלת הנתונים שהועברו ב-intent
-        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
-        String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
-        String recipeInstructions = getIntent().getStringExtra("RECIPE_INSTRUCTIONS");
-        String recipeNotes = getIntent().getStringExtra("RECIPE_NOTES");
+//        String recipeName = getIntent().getStringExtra("RECIPE_NAME");
+//        String recipeIngredients = getIntent().getStringExtra("RECIPE_INGREDIENTS");
+//        String recipeInstructions = getIntent().getStringExtra("RECIPE_INSTRUCTIONS");
+//        String recipeNotes = getIntent().getStringExtra("RECIPE_NOTES");
 
         // יצירת SpannableString למתכון המעוצב
         SpannableStringBuilder designedRecipe = new SpannableStringBuilder();
