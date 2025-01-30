@@ -34,88 +34,95 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
-    private LoginViewModel loginViewModel;
-    private FragmentLoginBinding binding;
+    private LoginViewModel loginViewModel;  // ViewModel to manage login data
+    private FragmentLoginBinding binding;  // Binding to access views
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Initialize ViewModel
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
-        final Button loginButton = binding.login;
-        final Button SigninButton = binding.Signin;
-        final ProgressBar loadingProgressBar = binding.loading;
+        final EditText usernameEditText = binding.username;  // Username input field
+        final EditText passwordEditText = binding.password;  // Password input field
+        final Button loginButton = binding.login;  // Login button
+        final Button SigninButton = binding.Signin;  // Navigate to SignUp button
+        final ProgressBar loadingProgressBar = binding.loading;  // Loading progress bar
 
+        // Observe login form state changes
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
+                loginButton.setEnabled(loginFormState.isDataValid());  // Enable login button if data is valid
                 if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                    usernameEditText.setError(getString(loginFormState.getUsernameError()));  // Show username error
                 }
                 if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                    passwordEditText.setError(getString(loginFormState.getPasswordError()));  // Show password error
                 }
             }
         });
 
+        // Observe login result changes
         loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), new Observer<LoginResult>() {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
+                loadingProgressBar.setVisibility(View.GONE);  // Hide progress bar
                 if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
+                    showLoginFailed(loginResult.getError());  // Show login failure message
                 }
                 if (loginResult.getSuccess() != null) {
-                    // updateUiWithUser(loginResult.getSuccess());
+                    // Update UI with successful login
                 }
             }
         });
 
+        // TextWatcher for validating login data as text changes
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
+                // Ignore
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
+                // Ignore
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                // Validate login data after text changes
                 loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        usernameEditText.addTextChangedListener(afterTextChangedListener);  // Add listener to username field
+        passwordEditText.addTextChangedListener(afterTextChangedListener);  // Add listener to password field
 
+        // Handle "done" action on the password field
+        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Perform login when done
                     loginViewModel.login(usernameEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
@@ -123,100 +130,77 @@ public class LoginFragment extends Fragment {
             }
         });
 
-
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                // ביצוע פעולה לוגית של login
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-//
-//                // מעבר ל-Activity החדש
-//                Intent intent = new Intent(requireContext(), HomeViewActivity.class);
-//                startActivity(intent);
-//
-//                // הסתרת ה-Progress Bar אם צריך
-//                loadingProgressBar.setVisibility(View.GONE);
-//            }
-//        });
+        // Handle login button click
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // הצגת ה-ProgressBar
-                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setVisibility(View.VISIBLE);  // Show progress bar
 
-                String email = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                String email = usernameEditText.getText().toString().trim();  // Get email input
+                String password = passwordEditText.getText().toString().trim();  // Get password input
 
-                // אימות קלט
+                // Validate input fields
                 if (TextUtils.isEmpty(email)) {
-                    usernameEditText.setError("יש להזין כתובת אימייל");
-                    loadingProgressBar.setVisibility(View.GONE);
+                    usernameEditText.setError("Email is required");
+                    loadingProgressBar.setVisibility(View.GONE);  // Hide progress bar
                     return;
                 }
-
                 if (TextUtils.isEmpty(password)) {
-                    passwordEditText.setError("יש להזין סיסמה");
-                    loadingProgressBar.setVisibility(View.GONE);
+                    passwordEditText.setError("Password is required");
+                    loadingProgressBar.setVisibility(View.GONE);  // Hide progress bar
                     return;
                 }
 
-                // ניסיון התחברות ל-Firebase Authentication
+                // Attempt to sign in with Firebase Authentication
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
-                            // הסתרת ה-ProgressBar
-                            loadingProgressBar.setVisibility(View.GONE);
-
+                            loadingProgressBar.setVisibility(View.GONE);  // Hide progress bar
                             if (task.isSuccessful()) {
                                 FirebaseUser user = auth.getCurrentUser();
                                 if (user != null) {
-                                    // התחברות הצליחה, מעבר למסך הראשי
+                                    // On successful login, navigate to HomeActivity
                                     Intent intent = new Intent(requireContext(), HomeViewActivity.class);
                                     intent.putExtra("USERNAME", user.getUid());
                                     startActivity(intent);
-                                    requireActivity().finish(); // סוגרים את המסך הנוכחי
+                                    requireActivity().finish();  // Close current screen
                                 }
                             } else {
-                                // הצגת הודעת שגיאה
-                                Toast.makeText(requireContext(), "ההתחברות נכשלה: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                // Show error message if login fails
+                                Toast.makeText(requireContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
             }
         });
 
-
+        // Handle sign-in button click (navigate to SignUp fragment)
         SigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.action_LoginFragment_to_SignInFragment);
+                navController.navigate(R.id.action_LoginFragment_to_SignInFragment);  // Navigate to SignUp
             }
         });
-
     }
 
+    // Show a welcome message after successful login
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
     }
 
+    // Show an error message if login fails
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
-            Toast.makeText(
-                    getContext().getApplicationContext(),
-                    errorString,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext().getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        binding = null;  // Clear binding reference
     }
 }

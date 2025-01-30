@@ -16,8 +16,7 @@
         android:orientation="vertical"
         android:gravity="center">
 
-
-        <!-- סיסמא -->
+        <!-- Password field -->
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
@@ -29,10 +28,9 @@
             android:padding="10dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- שם משתמש -->
+        <!-- Username field -->
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
@@ -43,9 +41,9 @@
             android:padding="10dp"
             android:fontFamily="@font/rubik_medium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- אימייל -->
+        <!-- Email field -->
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
@@ -57,9 +55,9 @@
             android:background="@drawable/edittext_background"
             android:padding="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- כפתור הרשמה -->
+        <!-- Register button -->
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
@@ -73,6 +71,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Loading progress bar -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -80,7 +79,7 @@
             android:visibility="gone"
             android:layout_gravity="center" />
 
-        <!-- לוגו -->
+        <!-- App logo image -->
         <ImageView
             android:id="@+id/myImageView"
             android:layout_width="423dp"

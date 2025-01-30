@@ -27,32 +27,29 @@ import java.util.Map;
 
 public class EditRecipeActivity extends AppCompatActivity {
     private EditText recipeNameField, ingredientsField, instructionsField, notesField;
-    private String username,recipeId;
-    private String newRecipeName ,newRecipeIngredients ,newRecipeInstructions,newRecipeNotes;
-    private  final boolean[] nameHasChange = {false};
-    private  final boolean[] ingredientsHasChange = {false};
-    private  final boolean[] instructionsHasChange = {false};
-    private  final boolean[] notesHasChange = {false};
+    private String username, recipeId;
+    private String newRecipeName, newRecipeIngredients, newRecipeInstructions, newRecipeNotes;
+    private final boolean[] nameHasChange = {false};
+    private final boolean[] ingredientsHasChange = {false};
+    private final boolean[] instructionsHasChange = {false};
+    private final boolean[] notesHasChange = {false};
 
     private interface OnLeaveConfirmationListener {
         void onConfirmLeave(boolean shouldLeave);
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
 
-        username= getIntent().getStringExtra("USERNAME");
+        username = getIntent().getStringExtra("USERNAME");
         recipeId = getIntent().getStringExtra("RECIPE_ID");
 
         newRecipeName = getIntent().getStringExtra("RECIPE_NAME");
         newRecipeIngredients = getIntent().getStringExtra("INGREDIENTS");
         newRecipeInstructions = getIntent().getStringExtra("INSTRUCTIONS");
         newRecipeNotes = getIntent().getStringExtra("NOTES");
-
 
         // Initialize UI elements
         recipeNameField = findViewById(R.id.recipe_name_field);
@@ -71,14 +68,13 @@ public class EditRecipeActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 checkIfToLeave("האם אתה בטוח שברצונך לחזור לדף המתכון?\n השינויים שעשית לא יישמרו", new OnLeaveConfirmationListener() {
                     @Override
                     public void onConfirmLeave(boolean shouldLeave) {
                         if (shouldLeave) {
                             Intent intent = new Intent(EditRecipeActivity.this, CameraTempActivity.class);
                             intent.putExtra("RECIPE_NAME", newRecipeName);
-                            intent.putExtra("RECIPE_INGREDIENTS",newRecipeIngredients);
+                            intent.putExtra("RECIPE_INGREDIENTS", newRecipeIngredients);
                             intent.putExtra("RECIPE_INSTRUCTIONS", newRecipeInstructions);
                             intent.putExtra("RECIPE_NOTES", newRecipeNotes);
                             intent.putExtra("USERNAME", username);
@@ -87,7 +83,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         });
 
@@ -100,29 +95,28 @@ public class EditRecipeActivity extends AppCompatActivity {
                         if (shouldLeave) {
                             Intent intent = new Intent(EditRecipeActivity.this, HomeViewActivity.class);
                             intent.putExtra("USERNAME", username);
-                            startActivity(intent); // או כל פעולה אחרת שצריך לבצע ביציאה
+                            startActivity(intent); // or any other action needed when leaving
                         }
                     }
                 });
             }
         });
 
-
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveRecipe();
-
             }
         });
 
-        // הוספת TextWatcher לשדות עם המשתנה bוליאני
+        // Adding TextWatcher for fields with boolean variables
         recipeNameField.addTextChangedListener(createFieldWatcher(nameHasChange));
         ingredientsField.addTextChangedListener(createFieldWatcher(ingredientsHasChange));
         instructionsField.addTextChangedListener(createFieldWatcher(instructionsHasChange));
         notesField.addTextChangedListener(createFieldWatcher(notesHasChange));
     }
+
+
     private void checkIfToLeave(String msg, OnLeaveConfirmationListener listener) {
         if (!(nameHasChange[0] || ingredientsHasChange[0] || instructionsHasChange[0] || notesHasChange[0])) {
             listener.onConfirmLeave(true);
@@ -146,7 +140,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
 
     private void saveRecipe() {
         if(!nameHasChange[0]&&!ingredientsHasChange[0]&&!instructionsHasChange[0]&&!notesHasChange[0]){
@@ -179,21 +172,20 @@ public class EditRecipeActivity extends AppCompatActivity {
     }
 
     private boolean editReceipe(String recipeName, String ingredients, String instructions, String notes) {
-        // עדכון מסמך לפי מזהה (Document ID)
+        // Updating the document by its ID
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        String documentId = getIntent().getStringExtra("RECIPE_ID");;
+        String documentId = getIntent().getStringExtra("RECIPE_ID");
 
-// מפת ערכים לעדכון
+        // Values map for updates
         Map<String, Object> updates = new HashMap<>();
-        if(nameHasChange[0])
+        if (nameHasChange[0])
             updates.put("recipeName", recipeName);
-        if(ingredientsHasChange[0])
+        if (ingredientsHasChange[0])
             updates.put("ingredients", ingredients);
-        if(instructionsHasChange[0])
-        // עדכון שדה ספציפי
-            updates.put("instructions", instructions);          // עדכון שדה אחר
-        if(notesHasChange[0])
+        if (instructionsHasChange[0])
+            updates.put("instructions", instructions);          // Update other field
+        if (notesHasChange[0])
             updates.put("notes", notes);
 
         db.collection("Recipes")
@@ -205,12 +197,12 @@ public class EditRecipeActivity extends AppCompatActivity {
 
     }
 
-    // TextWatcher עבור בדיקת שינויים
+    // TextWatcher for change detection
     private TextWatcher createFieldWatcher(final boolean[] isFieldModified) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // לא דרוש שימוש כאן
+                // Not used here
             }
 
             @Override
@@ -220,9 +212,8 @@ public class EditRecipeActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // לא דרוש שימוש כאן
+                // Not used here
             }
         };
     }
-
 }

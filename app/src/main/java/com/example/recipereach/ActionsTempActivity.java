@@ -9,33 +9,39 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//זהו ניסיון להפעלת פעולות על המסך בלחיצת כפתור, ישמש כבסיס בעתיד
+/**
+ * ActionsTempActivity demonstrates basic UI interactions, including scrolling and text resizing.
+ * This serves as a foundation for future UI functionalities.
+ */
 public class ActionsTempActivity extends AppCompatActivity {
 
     private TextView longTextView;
     private ScrollView scrollView;
-    private float textSize = 16f;
+    private float textSize = 16f; // Default text size
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actions_temp);
 
+        // Initialize UI components
         longTextView = findViewById(R.id.longTextView);
         scrollView = findViewById(R.id.scrollView);
 
-        // טקסט ארוך לדוגמה
+        // Generate a long text for scrolling demonstration
         StringBuilder longText = new StringBuilder();
         for (int i = 0; i < 100; i++) {
             longText.append("זהו טקסט מאוד ארוך לחוויית גלילה.\n");
         }
         longTextView.setText(longText.toString());
 
+        // Initialize buttons
         Button btnScrollUp = findViewById(R.id.btnScrollUp);
         Button btnScrollDown = findViewById(R.id.btnScrollDown);
         Button btnIncreaseSize = findViewById(R.id.btnIncreaseSize);
         Button btnDecreaseSize = findViewById(R.id.btnDecreaseSize);
 
+        // Scroll to the top when clicking the "Scroll Up" button
         btnScrollUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +49,7 @@ public class ActionsTempActivity extends AppCompatActivity {
             }
         });
 
+        // Scroll to the bottom when clicking the "Scroll Down" button
         btnScrollDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +57,7 @@ public class ActionsTempActivity extends AppCompatActivity {
             }
         });
 
+        // Increase text size when clicking the "Increase Size" button
         btnIncreaseSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,11 +66,12 @@ public class ActionsTempActivity extends AppCompatActivity {
             }
         });
 
+        // Decrease text size when clicking the "Decrease Size" button (minimum size: 8)
         btnDecreaseSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textSize -= 2;
-                if (textSize > 8) { // מגבלת גודל מינימלי
+                if (textSize > 8) {
                     longTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
                 }
             }

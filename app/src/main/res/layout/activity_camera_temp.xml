@@ -1,10 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layoutDirection="rtl"
     android:gravity="end">
 
+    <!-- Camera preview for gesture recognition (hidden by default) -->
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="150dp"
@@ -13,20 +14,21 @@
         android:layout_margin="16dp"
         android:visibility="invisible" />
 
-    <!-- שכבת האוברליי -->
+    <!-- Overlay layer for displaying gesture-related UI elements -->
     <com.example.recipereach.OverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end" />
 
+    <!-- Bottom navigation bar with action buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- כפתור דף הבית -->
+        <!-- Home button -->
         <ImageButton
             android:id="@+id/home_button"
             android:layout_width="0dp"
@@ -39,57 +41,48 @@
             android:src="@drawable/ic_home"
             app:tint="@color/buttonColor" />
 
-        <!-- רווח באמצע -->
+        <!-- Spacer to create equal distribution between buttons -->
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="2" />
 
-        <!-- כפתור מדריך -->
+        <!-- Guide button -->
         <ImageButton
             android:id="@+id/guideButton"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_margin="0dp"
             android:layout_weight="1"
             android:contentDescription="מדריך"
             android:src="@drawable/ic_handbook"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:background="@android:color/transparent" />
 
-        <!-- כפתור עריכה -->
+        <!-- Edit button -->
         <ImageButton
             android:id="@+id/editButton"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_margin="0dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="עריכה"
-            android:foreground="?attr/selectableItemBackground"
             android:scaleType="centerInside"
             android:src="@drawable/ic_edit"
             app:tint="@color/buttonBackground" />
 
-        <!-- כפתור מחיקת מתכונים -->
+        <!-- Delete button -->
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_margin="0dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="מחק"
-            android:foreground="?attr/selectableItemBackground"
             android:scaleType="centerInside"
             android:src="@drawable/ic_delete"
             app:tint="@color/buttonBackground" />
     </LinearLayout>
 
-
-    <!-- תיבת טקסט ארוכה עם אפשרות לגלול -->
-
+    <!-- Scrollable text view for displaying recipe details -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -109,16 +102,16 @@
             android:fontFamily="@font/rubik_medium"/>
     </ScrollView>
 
+    <!-- Container for action buttons (start & stop) -->
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
-        <!-- כפתור 1 -->
+        <!-- Start button -->
         <Button
             android:id="@+id/startButton"
             android:layout_width="0dp"
@@ -132,7 +125,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/rubik_medium"/>
 
-        <!-- כפתור 2 -->
+        <!-- Stop button -->
         <Button
             android:id="@+id/endButton"
             android:layout_width="0dp"
@@ -146,5 +139,4 @@
             android:textStyle="bold"
             android:fontFamily="@font/rubik_medium"/>
     </LinearLayout>
-
 </FrameLayout>

@@ -11,7 +11,7 @@
     android:gravity="end"
     tools:context=".HomeViewActivity">
 
-    <!-- כותרת "המתכונים שלי" -->
+    <!-- Title: "My Recipes" -->
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Search bar container -->
     <FrameLayout
         android:id="@+id/searchContainer"
         android:layout_width="0dp"
@@ -35,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- שדה חיפוש -->
+        <!-- Search input field -->
         <EditText
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
@@ -51,7 +52,7 @@
             android:textColorHint="@color/tcelet"
             android:elevation="2dp" />
 
-        <!-- כפתור מיון -->
+        <!-- Sorting button -->
         <ImageButton
             android:id="@+id/sortButton"
             android:layout_width="40dp"
@@ -64,21 +65,7 @@
             android:src="@drawable/ic_sort" />
     </FrameLayout>
 
-
-    <!-- כותרת רשימת המתכונים
-    <TextView
-        android:id="@+id/recipesTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="אוסף המתכונים שלך"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer"
-        app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!-- הודעה כאשר אין תוצאות -->
+    <!-- Message displayed when no search results are found -->
     <TextView
         android:id="@+id/noResultsTextView"
         android:layout_width="wrap_content"
@@ -94,10 +81,7 @@
         app:layout_constraintStart_toStartOf="@+id/recipesRecyclerView"
         app:layout_constraintEnd_toEndOf="@+id/recipesRecyclerView" />
 
-    <!-- רשימת המתכונים -->
-
-    <!-- כפתור הוספת מתכון -->
-
+    <!-- Recipes list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipesRecyclerView"
         android:layout_width="375dp"
@@ -114,6 +98,7 @@
         app:layout_constraintTop_toBottomOf="@id/searchContainer"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!-- Add recipe button -->
     <ImageButton
         android:id="@+id/addRecipeButton"
         android:layout_width="72dp"
@@ -126,18 +111,4 @@
         android:translationZ="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <!-- כפתור מדריך
-    <ImageButton
-        android:id="@+id/guideButton"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="0dp"
-        android:contentDescription="מדריך"
-        android:src="@drawable/ic_handbook"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
--->
 </androidx.constraintlayout.widget.ConstraintLayout>

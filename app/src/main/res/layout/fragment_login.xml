@@ -12,6 +12,7 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
+    <!-- App Logo ImageView -->
     <ImageView
         android:id="@+id/myImageView"
         android:layout_width="423dp"
@@ -22,6 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Email Input Field -->
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
@@ -37,7 +39,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/rubik_medium"/>
 
-    <!-- שדה סיסמה -->
+    <!-- Password Input Field -->
     <EditText
         android:id="@+id/password"
         android:layout_width="0dp"
@@ -56,7 +58,7 @@
         android:layoutDirection="rtl"
         android:fontFamily="@font/rubik_medium"/>
 
-    <!-- כפתור התחברות -->
+    <!-- Login Button -->
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
@@ -69,7 +71,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/rubik_medium"/>
 
-    <!-- כפתור רישום -->
+    <!-- Sign-up Button -->
     <Button
         android:id="@+id/Signin"
         android:layout_width="wrap_content"
@@ -82,7 +84,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/rubik_medium"/>
 
-    <!-- Progress Bar -->
+    <!-- Loading Progress Bar (Visible during authentication process) -->
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"

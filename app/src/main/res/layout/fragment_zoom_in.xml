@@ -9,7 +9,7 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
-    <!-- כותרת טקסט שמסבירה את הפעולה -->
+    <!-- Title text explaining the gesture -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -22,17 +22,16 @@
         android:paddingTop="16dp"
         android:fontFamily="@font/rubik_medium"/>
 
-    <!-- תמונה עם רקע שקוף -->
+    <!-- Image representing the gesture with a transparent background -->
     <ImageView
         android:id="@+id/zoomImage"
         android:layout_width="190dp"
         android:layout_height="180dp"
         android:src="@drawable/grip"
         android:layout_gravity="center"
-        android:contentDescription="תנועת palm להגדלה"
-        />
+        android:contentDescription="תנועת palm להגדלה"/>
 
-
+    <!-- Arrow image indicating gesture direction -->
     <ImageView
         android:id="@+id/arrowImage"
         android:layout_width="100dp"
@@ -41,7 +40,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="32dp"/>
 
-    <!-- טקסט הסבר קצר -->
+    <!-- Short description text with centered alignment -->
     <TextView
         android:id="@+id/descriptionText"
         android:layout_width="wrap_content"
@@ -51,6 +50,8 @@
         android:textColor="@color/primaryTextColor"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
-        android:fontFamily="@font/rubik_medium"/>
+        android:fontFamily="@font/rubik_medium"
+        android:gravity="center"
+        android:textAlignment="center"/>
 
 </FrameLayout>
