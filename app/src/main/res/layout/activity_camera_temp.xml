@@ -5,21 +5,7 @@
     android:layoutDirection="rtl"
     android:gravity="end">
 
-    <!-- Camera preview for gesture recognition (hidden by default) -->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/view_finder"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:visibility="invisible" />
 
-    <!-- Overlay layer for displaying gesture-related UI elements -->
-    <com.example.recipereach.OverlayView
-        android:id="@+id/overlayView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|end" />
 
     <!-- Bottom navigation bar with action buttons -->
     <LinearLayout
@@ -101,6 +87,22 @@
             android:textColor="@color/primaryTextColor"
             android:fontFamily="@font/rubik_medium"/>
     </ScrollView>
+
+    <!-- Camera preview for gesture recognition (hidden by default) -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/view_finder"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:visibility="invisible" />
+
+    <!-- Overlay layer for displaying gesture-related UI elements -->
+    <com.example.recipereach.OverlayView
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|end" />
 
     <!-- Container for action buttons (start & stop) -->
     <LinearLayout

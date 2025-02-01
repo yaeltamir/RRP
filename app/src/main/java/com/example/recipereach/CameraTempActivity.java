@@ -341,7 +341,7 @@ public class CameraTempActivity extends AppCompatActivity {
             // Update UI visibility
             previewView.setVisibility(View.INVISIBLE);
             editButton.setVisibility(View.VISIBLE);
-            overlayView.clear();
+
 
             // Enable all buttons
             homeButton.setEnabled(true);
@@ -357,6 +357,7 @@ public class CameraTempActivity extends AppCompatActivity {
 
             Log.i("Camera", "Camera stopped");
         }
+        overlayView.clear();
     }
 
     // Analyzes an image frame, detects hand landmarks, and processes the results.
@@ -452,6 +453,7 @@ public class CameraTempActivity extends AppCompatActivity {
                     case POINT:
                         // Stopping the camera (specific behavior for this gesture)
                         stopCamera();
+                        overlayView.clear();
                         break;
                     case DISLIKE:
                         // Scrolling the view downwards to reveal more content
