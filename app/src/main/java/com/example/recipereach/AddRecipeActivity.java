@@ -108,10 +108,10 @@ public class AddRecipeActivity extends AppCompatActivity {
         db.collection("Recipes")
                 .add(recipeData)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(getApplicationContext(), "מתכון נשמר בהצלחה!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "מתכון נוסף בהצלחה!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getApplicationContext(), "שמירת מתכון נכשלה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "הוספת מתכון נכשלה: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.e("addRecipe", e.getMessage());
                 });
 
