@@ -84,6 +84,8 @@ public class CameraTempActivity extends AppCompatActivity {
     private GesturePredictor gesturePredictor;
     private String username,recipeName,recipeIngredients ,recipeInstructions,recipeNotes;
     private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int MIN_TEXT_SIZE = 47;
+    private static final int MAX_TEXT_SIZE = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public class CameraTempActivity extends AppCompatActivity {
         btnOpenGuide = findViewById(R.id.guideButton);
         deleteBtn = findViewById(R.id.deleteButton);
 
+       // recipe.setTextSize(MIN_TEXT_SIZE);
         setFullRecipe();
 
         // Log retrieved values for debugging
@@ -448,7 +451,7 @@ public class CameraTempActivity extends AppCompatActivity {
                 switch (prediction) {
                     case PALM:
                         // Increasing the text size if it is below 150 SP
-                        if (recipe.getTextSize() < 150) {
+                        if (recipe.getTextSize() < MAX_TEXT_SIZE) {
                             // Getting current text size in SP and increasing it
                             float currentSize = recipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
                             recipe.setTextSize(currentSize + 1);
@@ -457,7 +460,7 @@ public class CameraTempActivity extends AppCompatActivity {
                         break;
                     case GRIP:
                         // Decreasing the text size if it is above 47 SP
-                        if (recipe.getTextSize() > 47) {
+                        if (recipe.getTextSize() > MIN_TEXT_SIZE) {
                             // Getting current text size in SP and decreasing it
                             float currentSize = recipe.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
                             recipe.setTextSize(currentSize - 1);

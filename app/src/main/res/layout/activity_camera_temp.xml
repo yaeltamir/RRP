@@ -83,7 +83,7 @@
             android:lineSpacingExtra="4dp"
             android:padding="16dp"
             android:text="@string/long_text"
-            android:textSize="32px"
+            android:textSize="47px"
             android:textColor="@color/primaryTextColor"
             android:fontFamily="@font/rubik_medium"/>
     </ScrollView>
