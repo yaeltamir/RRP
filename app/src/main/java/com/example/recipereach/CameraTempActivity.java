@@ -129,15 +129,15 @@ public class CameraTempActivity extends AppCompatActivity {
         startButton.setOnClickListener(v -> {
             // Disable buttons before starting
             homeButton.setEnabled(false);
-            homeButton.setAlpha(0.5f);
+            homeButton.setAlpha(0.25f);
             btnOpenGuide.setEnabled(false);
-            btnOpenGuide.setAlpha(0.5f);
+            btnOpenGuide.setAlpha(0.25f);
             editButton.setEnabled(false);
-            editButton.setAlpha(0.5f);
+            editButton.setAlpha(0.25f);
             deleteBtn.setEnabled(false);
-            deleteBtn.setAlpha(0.5f);
+            deleteBtn.setAlpha(0.25f);
             startButton.setEnabled(false);
-            startButton.setAlpha(0.5f);
+            startButton.setAlpha(0.25f);
 
             // Check camera permission
             if (ContextCompat.checkSelfPermission(getApplicationContext(),
