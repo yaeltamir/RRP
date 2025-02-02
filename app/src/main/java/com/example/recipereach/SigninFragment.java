@@ -88,13 +88,13 @@ public class SigninFragment extends Fragment {
 
         // Show error messages if validation fails
         if (!isEmailValid) {
-            emailEditText.setError("Invalid email format");
+            emailEditText.setError("כתובת אימייל לא תקינה");
         }
         if (!isPasswordValid) {
-            passwordEditText.setError("Password must be at least 6 characters");
+            passwordEditText.setError("סיסמא חייבת להיות לפחות 6 תווים");
         }
         if (!isUsernameValid) {
-            usernameEditText.setError("Username cannot be empty");
+            usernameEditText.setError("שם משתמש לא יכול להיות \"\"");
         }
 
         // Enable sign-in button only if all fields are valid

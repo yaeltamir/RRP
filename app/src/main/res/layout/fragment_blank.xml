@@ -16,19 +16,7 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!-- Password field -->
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            android:fontFamily="@font/rubik_medium"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+
 
         <!-- Username field -->
         <EditText
@@ -54,6 +42,19 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_background"
             android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Password field -->
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:fontFamily="@font/rubik_medium"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
