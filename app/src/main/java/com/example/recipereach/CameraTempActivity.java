@@ -473,8 +473,10 @@ public class CameraTempActivity extends AppCompatActivity {
                         break;
                     case POINT:
                         // Stopping the camera (specific behavior for this gesture)
-                        stopCamera();
+                        startButton.setText("התחל");
                         overlayView.clear();
+                        stopCamera();
+
                         break;
                     case DISLIKE:
                         // Scrolling the view downwards to reveal more content
