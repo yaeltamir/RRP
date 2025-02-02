@@ -27,7 +27,7 @@
         android:id="@+id/zoomImage"
         android:layout_width="190dp"
         android:layout_height="180dp"
-        android:src="@drawable/grip"
+        android:src="@drawable/palm"
         android:layout_gravity="center"
         android:contentDescription="תנועת palm להגדלה"/>
 
