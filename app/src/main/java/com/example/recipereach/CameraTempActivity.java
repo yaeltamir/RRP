@@ -323,7 +323,7 @@ public class CameraTempActivity extends AppCompatActivity {
 
                 // Update UI visibility
                 previewView.setVisibility(View.VISIBLE);
-                editButton.setVisibility(View.GONE);
+
 
             } catch (Exception e) {
                 Log.e("Camera", "Error starting camera", e);
@@ -340,7 +340,6 @@ public class CameraTempActivity extends AppCompatActivity {
 
             // Update UI visibility
             previewView.setVisibility(View.INVISIBLE);
-            editButton.setVisibility(View.VISIBLE);
 
 
             // Enable all buttons
