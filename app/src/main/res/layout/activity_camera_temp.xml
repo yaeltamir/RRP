@@ -127,18 +127,18 @@
             android:textStyle="bold"
             android:fontFamily="@font/rubik_medium"/>
 
-        <!-- Stop button -->
-        <Button
-            android:id="@+id/endButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_weight="1"
-            android:backgroundTint="@color/buttonColor"
-            android:text="הפסק"
-            android:textColor="@color/buttonTextColor"
-            android:textSize="@dimen/body_text_size"
-            android:textStyle="bold"
-            android:fontFamily="@font/rubik_medium"/>
+<!--        &lt;!&ndash; Stop button &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/endButton"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/small_margin"-->
+<!--            android:layout_weight="1"-->
+<!--            android:backgroundTint="@color/buttonColor"-->
+<!--            android:text="הפסק"-->
+<!--            android:textColor="@color/buttonTextColor"-->
+<!--            android:textSize="@dimen/body_text_size"-->
+<!--            android:textStyle="bold"-->
+<!--            android:fontFamily="@font/rubik_medium"/>-->
     </LinearLayout>
 </FrameLayout>

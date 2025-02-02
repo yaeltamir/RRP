@@ -103,7 +103,7 @@ public class CameraTempActivity extends AppCompatActivity {
         cameraExecutor = Executors.newSingleThreadExecutor();
         overlayView = findViewById(R.id.overlayView);
         startButton = findViewById(R.id.startButton);
-        endButton = findViewById(R.id.endButton);
+    //    endButton = findViewById(R.id.endButton);
         editButton = findViewById(R.id.editButton);
         homeButton = findViewById(R.id.home_button);
         scrollView = findViewById(R.id.scrollView);
@@ -127,31 +127,20 @@ public class CameraTempActivity extends AppCompatActivity {
 
         // Start gesture recognition when clicking start button
         startButton.setOnClickListener(v -> {
-            // Disable buttons before starting
-            homeButton.setEnabled(false);
-            homeButton.setAlpha(0.25f);
-            btnOpenGuide.setEnabled(false);
-            btnOpenGuide.setAlpha(0.25f);
-            editButton.setEnabled(false);
-            editButton.setAlpha(0.25f);
-            deleteBtn.setEnabled(false);
-            deleteBtn.setAlpha(0.25f);
-            startButton.setEnabled(false);
-            startButton.setAlpha(0.25f);
-
-            // Check camera permission
-            if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(CameraTempActivity.this,
-                        new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-            } else {
-                if (!initialized) setHandLandmarker();
-                startCamera();
+            if (startButton.getText().equals("התחל")){
+                startButtonAction();
+                startButton.setText("הפסק");
             }
+            else {
+                stopCamera();
+                overlayView.clear();
+                startButton.setText("התחל");
+            }
+
         });
 
         // Stop gesture recognition when clicking end button
-        endButton.setOnClickListener(v -> stopCamera());
+  //      endButton.setOnClickListener(v -> stopCamera());
 
         // Open the edit recipe activity
         editButton.setOnClickListener(v -> {
@@ -267,6 +256,35 @@ public class CameraTempActivity extends AppCompatActivity {
         }
     }
 
+    private void startButtonAction(){
+        // Disable buttons before starting
+        homeButton.setEnabled(false);
+        homeButton.setAlpha(0.25f);
+        btnOpenGuide.setEnabled(false);
+        btnOpenGuide.setAlpha(0.25f);
+        editButton.setEnabled(false);
+        editButton.setAlpha(0.25f);
+        deleteBtn.setEnabled(false);
+        deleteBtn.setAlpha(0.25f);
+//        startButton.setEnabled(false);
+//        startButton.setAlpha(0.25f);
+
+        // Check camera permission
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(CameraTempActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            if (!initialized) setHandLandmarker();
+            startCamera();
+        }
+    }
+
+    private void endButtonAction(){
+
+    }
+
+
     // Initializes and configures the HandLandmarker for hand tracking.
     public void setHandLandmarker() {
         try {
@@ -333,6 +351,7 @@ public class CameraTempActivity extends AppCompatActivity {
 
     // Stops the camera, unbinds all use cases, and resets UI elements.
     private void stopCamera() {
+        overlayView.clear();
         if (cameraProvider != null) {
             // Unbind all camera use cases and reset provider
             cameraProvider.unbindAll();
@@ -351,12 +370,12 @@ public class CameraTempActivity extends AppCompatActivity {
             editButton.setAlpha(1f);
             deleteBtn.setEnabled(true);
             deleteBtn.setAlpha(1f);
-            startButton.setEnabled(true);
-            startButton.setAlpha(1f);
+//            startButton.setEnabled(true);
+//            startButton.setAlpha(1f);
 
             Log.i("Camera", "Camera stopped");
         }
-        overlayView.clear();
+
     }
 
     // Analyzes an image frame, detects hand landmarks, and processes the results.
